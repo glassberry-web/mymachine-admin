@@ -1,0 +1,12 @@
+.input.gridjs-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  border: 1px solid #d2d6dc;
+  border-radius: 5px;
+  font-size: 14px;
+  line-height: 1.45;
+  outline: none;
+   padding: 5px 5px!important;
+}
