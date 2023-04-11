@@ -19,7 +19,7 @@ function Addproduct() {
   const [subcat, SetSubCat] = useState('');
   const [subcategory, SetSubCategory] = useState([]);
   const navigate = useNavigate();
-  const { _id } = JSON.parse(localStorage.getItem("vendor"));
+  // const { _id} = JSON.parse(localStorage.getItem("vendor"));
 
   const changeCategory = (event) =>{
     SetCategory(event.target.value);
@@ -78,7 +78,7 @@ function Addproduct() {
       formData.append("supplier", data.supplier);
       formData.append("power", data.power);
       formData.append("weight", data.weight);
-      formData.append("_id", _id);
+      // formData.append("_id", _id);
 
       const detail = await axios.post(ADD_PRODUCT, formData, {
         headers: { "Content-Type": "multipart/form-data" },
