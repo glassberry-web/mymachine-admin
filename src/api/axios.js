@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = "https://my-machine-store-dashboard.onrender.com";
+const baseURL = "https://my-machine-store-dashboardapi.onrender.com";
 // const baseURL = "http://localhost:5001";
 export default axios.create({
   baseURL: baseURL,
