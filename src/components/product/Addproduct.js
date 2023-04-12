@@ -56,7 +56,7 @@ function Addproduct() {
 
     try {
       formData.append("product_name", data.product_name);
-      formData.append("discriptrion", data.discriptrion);
+      formData.append("discription", data.discription);
       formData.append("MetaTitle", data.MetaTitle);
       formData.append("Publish_By", data.Publish_By);
       formData.append("image", image);
@@ -78,6 +78,7 @@ function Addproduct() {
       formData.append("supplier", data.supplier);
       formData.append("power", data.power);
       formData.append("weight", data.weight);
+      formData.append("shortDiscription", data.shortDiscription);
       // formData.append("_id", _id);
 
       const detail = await axios.post(ADD_PRODUCT, formData, {
