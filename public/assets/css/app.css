@@ -14383,6 +14383,16 @@ padding-bottom: 50px;
     left: 0px;
     background-color: rgb(183, 196, 215);
 }
+.paddingform{
+    padding: 2rem 3rem !important;
+    background: aliceblue;
+    border-radius: 16px;
+    box-shadow: rgba(100, 100, 111, 0.2)
+  }
+  .formcolor{
+    padding: 1rem 14rem !important;
+    background: linear-gradient(45deg, #dee9f1, #81d4fa40);
+  }
 @media screen and (min-width: 480px){
 .predit .bn{
     width: 120px;

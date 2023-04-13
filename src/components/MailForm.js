@@ -44,6 +44,10 @@ console.log("img",image)
       formData.append("type", data.type);
       formData.append("userName", data.userName);
       formData.append("password", data.password);
+      formData.append("machine", data.machine);
+      formData.append("employees", data.employees);
+      formData.append("engineer", data.engineer);
+      formData.append("customer", data.customer);
 
 
       // const res = await axios.post(Mail, {...data});
@@ -60,23 +64,39 @@ console.log("img",image)
   };
 
   return (
-    <form
+    <div className="formcolor">
+      <h1 className="text-center my-3">Complete your Registration</h1>
+    <form className="paddingform"
       onSubmit={handleSubmit(submitHandler)}
       action="/image"
       encType="multipart/form-data"
       method="POST"
 
     >
+      
       {MailData.map((data) => {
         return (
           <div className="row mb-3" key={data.idx}>
-            <div className="col-lg-3">
+            <div className="col-lg-2">
               <label htmlFor={data.htmlFor} className="form-label">
                 {data.title}
               </label>
             </div>
             <div className="col-lg-9">
-              <input
+              { 
+                data.title ==="Company discription" ? (<textarea
+                type={data.type}
+                className="form-control"
+                id={data.id}
+                onChange={imgHandler}
+                accept={data.accept}
+                placeholder={data.placeholder}
+                {...register(`${data.name}`, {
+                  required: true,
+                })}
+                />):(
+
+                <input
                 type={data.type}
                 className="form-control"
                 id={data.id}
@@ -87,17 +107,21 @@ console.log("img",image)
                   required: true,
                 })}
               />
+                )
+              }
+              
             </div>
           </div>
         );
       })}
 
-      <div className="text-end">
-        <button type="submit" className="btn btn-primary">
+      <div className="text-center ">
+        <button type="submit" className="btn btn-warning w-50">
           Add
         </button>
       </div>
     </form>
+    </div>
   );
 }
 
