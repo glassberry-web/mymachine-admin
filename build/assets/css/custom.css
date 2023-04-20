@@ -1,0 +1,40 @@
+.search {
+  appearance: none;
+  background-color: #fff;
+  border: 1px solid #d2d6dc;
+  border-radius: 5px;
+  font-size: 14px;
+  line-height: 1.45;
+  outline: none;
+}
+input.gridjs-input {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  border: 1px solid #d2d6dc;
+  border-radius: 5px;
+  font-size: 14px;
+  line-height: 1.45;
+  outline: none;
+  padding: 5px 30px !important;
+}
+td.gridjs-td {
+  border: 1px solid #e5e7eb;
+  box-sizing: content-box;
+  padding: 13px 15px !important;
+
+}
+.topbar-user {
+  background-color: #fff !important;
+}
+
+.hstack{
+  float: right;
+}
+.btn {
+  margin-left: 10px !important;
+}
+.jodit-status-bar{
+  display: none !important;
+}
