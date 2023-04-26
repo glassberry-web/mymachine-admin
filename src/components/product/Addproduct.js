@@ -90,8 +90,8 @@ function Addproduct() {
         toast.success("Success Notification !", {
           position: toast.POSITION.TOP_RIGHT,
         });
-        navigate("/vendorAdminPanel");
-        // navigate("/ProductList")
+        // navigate("/vendorAdminPanel");
+        navigate("/ProductList")
       }
     } catch (error) {
       console.log("post error===>", error.message);
@@ -248,7 +248,7 @@ function Addproduct() {
                           <div className="avatar-lg">
                             <div className="avatar-title bg-light rounded">
                               <img
-                                src="#"
+                                src="/uploads"
                                 id="product-img"
                                 className="avatar-md h-auto"
                               />
