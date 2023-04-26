@@ -67,11 +67,11 @@ const Login = () => {
         <div className="bg-overlay"></div>
         <div className="auth-page-content overflow-hidden pt-lg-5">
           <div className="container">
-            <div className="row">
-              <div className="col-lg-12">
+            <div className="row rowflex">
+              <div className="col-lg-5">
                 <div className="card overflow-hidden">
                   <div className="row g-0">
-                    <div className="col-lg-6">
+                    {/* <div className="col-lg-6">
                       <div className="p-lg-5 p-4 auth-one-bg h-100">
                         <div className="bg-overlay"></div>
                         <div className="position-relative h-100 d-flex flex-column">
@@ -137,28 +137,29 @@ const Login = () => {
                                 </div>
                               </div>
                             </div>
-                            {/* <!-- end carousel --> */}
+                           
                           </div>
                         </div>
                       </div>
-                    </div>
-                    {/* <!-- end col --> */}
+                    </div> */}
+                    
 
                     <div
-                      className="col-lg-6"
+                      className="col-lg-12"
                       style={{ backgroundColor: "white" }}
                     >
-                      <div className="p-lg-5 p-4">
-                        <div>
-                          <h5 className="text-primary">Welcome Back !</h5>
-                          <p className="text-muted">Log in to your account.</p>
+                      <div className="p-lg-5 p-4 pad2rem">
+                        <div className="logoflex">
+                          <img src="assets/images/logowhite.png" className="mywidth"/>
+                          {/* <h5 className="text-primary">Welcome Back !</h5> */}
+                          <p className="text-muted fs1rem">Log in to your account.</p>
                         </div>
 
-                        <div className="mt-4">
+                        <div className="">
                           <form
                             onSubmit={handleSubmit(onSubmit)}
                             // onSubmit={()=>{handleSubmit(onSubmit)}}
-                            action="https://themesbrand.com/velzon/html/interactive/index.html"
+                            
                           >
                             <div className="mb-3">
                               <label htmlFor="username" className="form-label">
@@ -210,19 +211,19 @@ const Login = () => {
                                   </p>
                                 )}
 
-                                <button
+                                {/* <button
                                   className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted "
                                   type="button"
                                   id="password-addon"
                                 >
                                   <i className="ri-eye-fill align-middle"></i>
-                                </button>
+                                </button> */}
                               </div>
                             </div>
 
                             <div className="mt-4">
                               <button
-                                className="btn btn-info w-100"
+                                className="btn btn-warning w-100 btn0"
                                 // onClick={formSubmitHandler}
                                 type="submit"
                               >

@@ -10924,7 +10924,11 @@ to {
     padding: 2px 16px;
 }
 .auth-bg-cover {
-    background: linear-gradient(-45deg, #0d6efd 50%, #198754);
+    /* background: linear-gradient(-45deg, #0d6efd 50%, #198754); */
+    background-image: linear-gradient(90deg, #c8c7c73b, #939292d6),url(../images/fbl.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom;
 }
 .auth-bg-cover>.bg-overlay {
     background-image: url(../images/cover-pattern.png);
@@ -14403,3 +14407,27 @@ padding-bottom: 50px;
     padding-left: 20px;
 }
 }
+
+.rowflex{
+    display: flex;
+    justify-content: center;
+}
+.mywidth{
+    width: 250px;
+}
+.logoflex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.fs1rem{
+    font-size: 1.1rem;
+}
+.pad2rem{
+    padding: 2rem !important;
+}
+.btn0{
+    margin-left: 0px !important;
+}
+

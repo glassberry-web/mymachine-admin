@@ -32,9 +32,9 @@ td.gridjs-td {
 .hstack{
   float: right;
 }
-.btn {
+/* .btn {
   margin-left: 10px !important;
-}
+} */
 .jodit-status-bar{
   display: none !important;
 }
