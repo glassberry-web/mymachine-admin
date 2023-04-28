@@ -23,6 +23,7 @@ import VendorProtectedRoute from "./VendorProtectedRoute";
 import AddCompany from "../components/company/AddCompany";
 import AddVendor from "../pages/AddCompany";
 import CompanyDetail from "../components/company/CompanyDetail";
+
 function AllRoutes() {
   return (
     <Routes>

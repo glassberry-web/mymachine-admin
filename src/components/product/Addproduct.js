@@ -9,15 +9,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import JoditEditor from 'jodit-react';
 
-import { useState, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 
 function Addproduct() {
   const editor = useRef(null);
   const [content, setContent] = useState('');
   const [image, setImage] = useState();
+  const [preview, setPreview] = useState()
   const [category, SetCategory] = useState('--Category--');
   const [subcat, SetSubCat] = useState('');
   const [subcategory, SetSubCategory] = useState([]);
+  const [imageUrl, setImageUrl] = useState(null);
   const navigate = useNavigate();
   // const { _id} = JSON.parse(localStorage.getItem("vendor"));
 
@@ -30,6 +32,18 @@ function Addproduct() {
     SetSubCat(event.target.value);
     subcat === undefined  ? SetSubCat("") :  SetSubCat(event.target.value);
   }
+  useEffect(() => {
+    if (!image) {
+        setPreview(undefined)
+        return
+    }
+
+    const objectUrl = URL.createObjectURL(image)
+    setPreview(objectUrl)
+
+    // free memory when ever this component is unmounted
+    return () => URL.revokeObjectURL(objectUrl)
+}, [image])
 
   const {
     register,
@@ -38,14 +52,16 @@ function Addproduct() {
   } = useForm();
   const formData = new FormData();
   const imageHandler = (event) => {
+
+   
     if (event.target && event.target.files[0]) {
       setImage(event.target.files[0]);
-      // setImage({files: [...event.target.files]});
+      // setImage({files: [...event.target.files]}); comment
     } else {
       console.log("Something went wrong");
     }
 
-    // setImage(event.target.files[0]);
+    // setImage(event.target.files[0]); comment
   };
   console.log("img===>", image);
  
@@ -60,6 +76,14 @@ function Addproduct() {
       formData.append("MetaTitle", data.MetaTitle);
       formData.append("Publish_By", data.Publish_By);
       formData.append("image", image);
+      // try {
+      //   const response = await axios.post('/addProduct', formData);
+      //   setImageUrl(response.data);
+      //   console.log(`Image URL: ${response.data}`);
+      // } catch (error) {
+      //   console.log(error);
+      // }
+          
       formData.append("Publish_Date", data.Publish_Date);
       formData.append("Updated_On", data.Updated_On);
       formData.append("brand", data.brand);
@@ -83,7 +107,7 @@ function Addproduct() {
 
       const detail = await axios.post(ADD_PRODUCT, formData, {
         headers: { "Content-Type": "multipart/form-data" },
-      });
+      });      
       console.log("detail===>", detail.data.result);
       console.log("successful");
       if (detail.status === 200) {
@@ -97,6 +121,7 @@ function Addproduct() {
       console.log("post error===>", error.message);
     }
   };
+  
 
   const buttons = ["image"]
   const editorConfig = {
@@ -213,7 +238,7 @@ function Addproduct() {
                       <p className="text-muted">Add Product main Image.</p>
                       <div className="text-center">
                         <div className="position-relative d-inline-block">
-                          <div className="position-absolute top-100 start-100 translate-middle">
+                          <div className="position-absolute top-100 start-100 translate-middle tramiddle">
                             <label
                               htmlFor="product-image-input"
                               className="mb-0"
@@ -222,8 +247,9 @@ function Addproduct() {
                               title="Select Image"
                             >
                               <div className="avatar-xs">
-                                <div className="avatar-title bg-light border rounded-circle text-muted cursor-pointer">
-                                  <i className="ri-image-fill"></i>
+                                <div className="avatar-title bg-light  border rounded-circle text-muted cursor-pointer">
+                                  <img src="assets/images/brands/buttion.png" alt="upload" className="widbut" />
+                                  {/* // <i className="ri-image-fill"></i> */}
                                 </div>
                               </div>
                             </label>
@@ -245,12 +271,13 @@ function Addproduct() {
                           </p>
                         )} */}
                           </div>
-                          <div className="avatar-lg">
-                            <div className="avatar-title bg-light rounded">
+                          <div className="avatar-lg avtlg">
+                            <div className="avatar-title bg-light bgavt rounded">
                               <img
-                                src="/uploads"
+                                src={preview}
+                                // onChange={imageHandler}                    
                                 id="product-img"
-                                className="avatar-md h-auto"
+                                className="avatar-md avtwid h-auto"
                               />
                             </div>
                           </div>

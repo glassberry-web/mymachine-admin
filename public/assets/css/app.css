@@ -14430,4 +14430,23 @@ padding-bottom: 50px;
 .btn0{
     margin-left: 0px !important;
 }
+.widbut{
+    width: 4rem;
+}
+.tramiddle{
+    transform: translate(60%,-50%)!important;
+}
+.avtwid{
+    width: 9rem;
+}
+.avtlg{
+    width: 10rem !important;
+    height: 10rem !important;
+}
+.bgavt{
+    background-image: url(../images/brands/ddownn.png) !important;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+}
 
