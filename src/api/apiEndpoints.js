@@ -22,7 +22,13 @@ export const VENDOR_LIST = "/enquiry/vendorList";
 
 //vendor add product
 export const ADD_PRODUCT = "/enquiry/addProduct";
+export const GET_PRODUCT = "/enquiry/getProduct";
+export const EdIT_PRODUCT = "/enquiry/editProduct";
+export const UPDATE_PRODUCT = "/enquiry/updateProduct";
 
+  
+//vendor delete product
+export const DELETE_PRODUCT = "/enquiry/deleteProduct";
 
 //vendor product list
 export const PRODUCT_LIST = "/enquiry/productList";

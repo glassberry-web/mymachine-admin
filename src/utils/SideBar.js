@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "../api/axios";
-
+import { BiEdit } from "react-icons/bi";
+import {MdDeleteOutline} from "react-icons/md"
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 const SideBar = ({
   title,
   onClick,
@@ -38,6 +41,21 @@ const SideBar = ({
   useEffect(() => {
     enquiryDetail();
   }, [pageNo, _id]);
+  const navigate = useNavigate();
+  const deletePost = async(id) => {
+    console.log(id);
+
+  const deletedData = await axios
+      .delete(`/delete/${id}`)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+      if (deletedData.status === 200) {
+        toast.success("Deleted Successfully", {
+          position: toast.POSITION.TOP_RIGHT,
+        });   
+    }
+    window.location.reload();
+  };
 
   const pages = new Array(totalPage).fill(null).map((v, i) => i);
 
@@ -144,7 +162,7 @@ const SideBar = ({
                                 className="gridjs-sort gridjs-sort-neutral"
                               ></button>
                             </th> */}
-                            <th
+                            {/* <th
                               data-column-id="actions"
                               className="gridjs-th gridjs-th-sort"
                               tabIndex="0"
@@ -157,15 +175,16 @@ const SideBar = ({
                                 title="Sort column ascending"
                                 className="gridjs-sort gridjs-sort-neutral"
                               ></button>
-                            </th>
+                            </th> */}
                           </tr>
                         </thead>
                       )}
 
                       <tbody className="gridjs-tbody">
                         {search?.map((item) => (
-
+                           
                           <tr className="gridjs-tr" key={item._id}>
+                            
 
                             {Object.values(item).map((val) => {
                               console.log("item===>",val)
@@ -185,21 +204,35 @@ const SideBar = ({
                                 </td>
                               );
                             })}
-
-
-                            <td data-column-id="actions" className="gridjs-td">
-                              <button
-                                className="btn btn-sm btn-soft-info"
-                                onClick={() => {
-                                  onClick(item._id);
-                                }}
-                              >
-                                Approve Now
-                              </button>
-                              <button className="btn btn-sm btn-soft-warning">
-                                Deny
-                              </button>
-                            </td>
+                            {/* {
+                               title ==="Product List" ?( <td data-column-id="actions" className="gridjs-td">
+                               <Link to={`/superAdminEditProduct/${item._id}`} state={{id:`${item._id}`}}>
+                               <button
+                                 className="btn btn-sm btn-soft-warning btnml" 
+                             
+                               >
+                               <BiEdit fontSize="1.6rem" title="Edit"/>
+                               </button>
+                               </Link>
+                               <button className="btn btn-sm btn-soft-danger" onClick={() => deletePost(item._id)}>
+                               <MdDeleteOutline fontSize="1.6rem" title="Delete" />
+                               </button>
+                             </td>):( <td data-column-id="actions" className="gridjs-td">
+                               <button
+                                 className="btn btn-sm btn-soft-info"
+                                 onClick={() => {
+                                   onClick(item._id);
+                                 }}
+                               >
+                                 Approve Now
+                               </button>
+                               <button className="btn btn-sm btn-soft-warning">
+                                 Deny
+                               </button>
+                             </td>) } */
+                            }
+                            
+                           
                           </tr>
                         ))}
                       </tbody>
@@ -260,6 +293,7 @@ const SideBar = ({
 
         {/*end modal*/}
       </div>
+      <ToastContainer />
     </>
   );
 };

@@ -18,11 +18,13 @@ import GridTable from "../components/gridTable/GridTable";
 import Addproduct from "../components/product/Addproduct";
 import ProductDetail from "../pages/ProductDetail";
 import AddProduct from "../pages/AddProduct";
+
 import VendorPage from "../vendor/vendorPage/VendorPage";
 import VendorProtectedRoute from "./VendorProtectedRoute";
 import AddCompany from "../components/company/AddCompany";
 import AddVendor from "../pages/AddCompany";
 import CompanyDetail from "../components/company/CompanyDetail";
+import Editproduct from "../components/product/EditProduct";
 
 function AllRoutes() {
   return (
@@ -37,6 +39,7 @@ function AllRoutes() {
       <Route element={<ProtectedRoute />}>
         {/* <Route path="/profile" element={<Profile />} /> */}
         <Route path="/superAdminAddProduct" element={<Addproduct />} />
+        <Route path="/superAdminEditProduct/:id" element={<Editproduct />} />
         {/* <Route path="/editProfile" element={<EditProfile />} /> */}
         <Route path="/sidebarDashboards" element={<Counter />} />
         <Route path="/sidebarDashboards" element={<Charts />} />

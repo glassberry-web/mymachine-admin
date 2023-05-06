@@ -1,17 +1,17 @@
 import { ProductCategory, featured } from "./ProductCategory";
 import { useForm } from "react-hook-form";
-import { ADD_PRODUCT, DELETE_PRODUCT } from "../../api/apiEndpoints";
+import { ADD_PRODUCT, DELETE_PRODUCT, Edit_PRODUCT } from "../../api/apiEndpoints";
 import parse from 'html-react-parser';
 
 import axios from "../../api/axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams, useLocation} from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
 import JoditEditor from 'jodit-react';
 
 import { useState, useEffect, useRef, useMemo } from "react";
 
-function Addproduct() {
+function Editproduct() {
   const editor = useRef(null);
   const [content, setContent] = useState('');
   const [image, setImage] = useState();
@@ -22,16 +22,51 @@ function Addproduct() {
   const [imageUrl, setImageUrl] = useState(null);
   const navigate = useNavigate();
   // const { _id} = JSON.parse(localStorage.getItem("vendor"));
+  
+  const { state } = useLocation();
+  // const params = useParams();
+  const { id } = state || {};
+  console.log("edit=>", id);
+  const [newformdata, setFormdata] = useState({});
+  // const [discription, setDiscription] = useState();
+  // const [product_name, setProduct_name] = useState();
+  // const [product_name, setProduct_name] = useState();
+  // const [product_name, setProduct_name] = useState();
+
+  useEffect(() => {
+    axios.get(`/editProduct/${id}`)
+      .then(response => setFormdata(response.data))
+      .catch(error => console.log(error));
+  }, [id]);
+  console.log("foredit", newformdata);
+
+  const handleChange = (event) => {
+    setFormdata({...newformdata, [event.target.name]: event.target.value});
+  }
+  // const changeFeature= (event) => {
+  //   s
+  // }
+
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   axios.put(`/edit/${id}`, newformdata)
+  //     .then(response => console.log(response))
+  //     .catch(error => console.log(error));
+  // }
+
 
   const changeCategory = (event) =>{
-    SetCategory(event.target.value);
+    // SetCategory(event.target.value);
+    SetCategory({...newformdata, [event.target.name]: event.target.value})
     console.log("category", category);
     SetSubCategory(ProductCategory.find(cat => cat.Category === event.target.value).subCategory);
   }
   const changeState = (event) => {
-    SetSubCat(event.target.value);
-    subcat === undefined  ? SetSubCat("") :  SetSubCat(event.target.value);
+    SetSubCat({...newformdata, [event.target.name]: event.target.value});
+    subcat === undefined  ? SetSubCat("") :  SetSubCat({...newformdata, [event.target.name]: event.target.value});
   }
+
+  // convert object url to images
   useEffect(() => {
     if (!image) {
         setPreview(undefined)
@@ -51,37 +86,24 @@ function Addproduct() {
     formState: { errors },
   } = useForm();
   const formData = new FormData();
-
-  // COLUDNARY
-  const handleImage = (e) =>{
-    setImage(e.target.files[0]);
-    // const file = e.target.files[0];
-    // setFileToBase(file);
-    // console.log(file);
-}
-
-// const setFileToBase = (file) =>{
-//     const reader = new FileReader();
-//     reader.readAsDataURL(file);
-//     reader.onloadend = () =>{
-//         setImage(reader.result);
-//     }
-
-// }
-  // CLOUDNARY END
-  const imageHandler = async(event) => {
-    const file = event.target.files[0];
-    const base64 = await convertToBase64(file);
-    console.log(base64)
-    setImage({ ...image, image : base64 })
+  const imageHandler = (event) => {
 
    
-    // if (event.target && event.target.files[0]) {
-    //   setImage(event.target.files[0]);
-    //   setImage({files: [...event.target.files]}); comment
-    // } else {
-    //   console.log("Something went wrong");
-    // }
+    if (event.target && event.target.files[0]) {
+      // setImage(event.target.files[0]);
+      setFormdata({ ...newformdata, image:event.target.files[0]});
+      // const reader = new FileReader();
+
+      // reader.onloadend = () => {
+      //   setFormdata({ ...newformdata, image: reader.result });
+      // };
+    
+      // reader.readAsDataURL(image);
+      
+      // setImage({files: [...event.target.files]}); comment
+    } else {
+      console.log("Something went wrong");
+    }
 
     // setImage(event.target.files[0]); comment
   };
@@ -127,12 +149,12 @@ function Addproduct() {
       formData.append("shortDiscription", data.shortDiscription);
       // formData.append("_id", _id);
 
-      const detail = await axios.post(ADD_PRODUCT, formData, {
+      const update = await axios.put(`/editProduct/${id}`, newformdata, {
         headers: { "Content-Type": "multipart/form-data" },
       });      
-      console.log("detail===>", detail.data.result);
+      console.log("update===>", update.data.result);
       console.log("successful");
-      if (detail.status === 200) {
+      if (update.status === 200) {
         toast.success("Success Notification !", {
           position: toast.POSITION.TOP_RIGHT,
         });
@@ -146,13 +168,23 @@ function Addproduct() {
   
 
   const buttons = ["image"]
-  const editorConfig = {
-    buttons: buttons,
-    uploader: {
-      insertImageAsBase64URI: true
-    },
+  // const editorConfig = {
+  //   buttons: buttons,
+  //   uploader: {
+  //     insertImageAsBase64URI: true
+  //   },  
    
-  }
+  // }
+
+  const editorConfig = useMemo(
+    () => ({
+      buttons: buttons,
+      uploader: {
+        insertImageAsBase64URI: true
+      }, 
+    }),
+    []
+);
   return (
     <>
       <div className="page-content">
@@ -181,7 +213,7 @@ function Addproduct() {
             noValidate
             action="/image"
             encType="multipart/form-data"
-            method="POST"
+            method="PATCH"
           >
             <div className="row">
               <div className="col-lg-8">
@@ -196,6 +228,7 @@ function Addproduct() {
                       </label>
                       <input
                         type="hidden"
+                        
                         className="form-control"
                         id="formAction"
                         name="formAction"
@@ -208,13 +241,17 @@ function Addproduct() {
                       />
                       <input
                         type="text"
-                        name="product_name"
+                        name="product_name" 
+                        value={newformdata.product_name}
+                        onChange={handleChange} 
+                        // defaultvalue={newformdata.product_name} 
+                        //                   
                         className="form-control"
                         id="product-title-input"
                         placeholder="Enter product name"
-                        {...register("product_name", {
-                          required: true,
-                        })}
+                        // {...register("product_name", {
+                        //   required: false,
+                        // })}
                       />
                       {errors.name?.type === "required" && (
                         <p role="alert" id="error">
@@ -234,12 +271,15 @@ function Addproduct() {
                         type="text"
                         name="discription"
                         className="form-control"
+                        // value={formData?.get('discription')}
+                        value={newformdata.discription} 
+                        onChange={handleChange} 
                         id="product-description"
                         placeholder="Enter product features"
                         rows="3"
-                        {...register("discription", {
-                          required: true,
-                        })}
+                        // {...register("discription", {
+                        //   required: false,
+                        // })}
                       />
                       {errors.name?.type === "required" && (
                         <p role="alert" id="error">
@@ -270,7 +310,7 @@ function Addproduct() {
                             >
                               <div className="avatar-xs">
                                 <div className="avatar-title bg-light  border rounded-circle text-muted cursor-pointer">
-                                  <img src="assets/images/brands/buttion.png" alt="upload" className="widbut" />
+                                  <img src="../assets/images/brands/buttion.png" alt="upload" className="widbut" />
                                   {/* // <i className="ri-image-fill"></i> */}
                                 </div>
                               </div>
@@ -278,11 +318,11 @@ function Addproduct() {
                             <input
                               className="form-control d-none"
                               id="product-image-input"
-                              type="file"                              
+                              type="file"
+                              // value={newformdata.image}  
                               name="image"
                               accept=".png, .jpg, .jpeg"
-                              onChange = {handleImage}
-                              // onChange={imageHandler}
+                              onChange={imageHandler}
                               // {...register("image", {
                               //   required: true,
                               // })}
@@ -296,7 +336,7 @@ function Addproduct() {
                           <div className="avatar-lg avtlg">
                             <div className="avatar-title bg-light bgavt rounded">
                               <img
-                               src={preview}
+                                src={preview}
                                 // onChange={imageHandler}                    
                                 id="product-img"
                                 className="avatar-md avtwid h-auto"
@@ -357,12 +397,17 @@ function Addproduct() {
                       >
                         Product Description*
                       </label>{
-                      useMemo(() => (<JoditEditor
+                        <JoditEditor                
+                        ref={editor}
+                        value={newformdata.product_content} 
+                        config={editorConfig}                    
+                        onChange={(newContent) => setFormdata({...newformdata, product_content:newContent})} />
+                      // useMemo(() =>(<JoditEditor
                 
-                      ref={editor}
-                      value={content}
-                      config={editorConfig}                    
-                      onChange={(newContent) => setContent(newContent)} />), [])
+                      // ref={editor}
+                      // value={newformdata.product_content} 
+                      // config={editorConfig}                    
+                      // onChange={(newContent) => setContent(newContent)} />), [content, editor])
                       }
                       
                   {/* // {...register("product_content", {
@@ -420,10 +465,12 @@ function Addproduct() {
                             className="form-control"
                             id="manufacturer-name-input"
                             name="manufacturerName"
+                            value={newformdata.manufacturerName}
+                            onChange={handleChange}  
                             placeholder="Enter manufacturer name"
-                            {...register("manufacturerName", {
-                              required: false,
-                            })}
+                            // {...register("manufacturerName", {
+                            //   required: false,
+                            // })}
                           />
                         </div>
                         <div className="row">
@@ -437,13 +484,13 @@ function Addproduct() {
                               </label>
                               <input
                                 type="text"
-                                name="brand"
                                 className="form-control"
-                                id="manufacturer-brand-input"
+                                value={newformdata.brand} 
+                                onChange={handleChange}                                 
                                 placeholder="Enter manufacturer brand"
-                                {...register("brand", {
-                                  required: false,
-                                })}
+                                // {...register("brand", {
+                                //   required: false,
+                                // })}
                               />
                             </div>
                           </div>
@@ -458,12 +505,15 @@ function Addproduct() {
                               <input
                                 type="text"
                                 name="modalNum"
+                                value={newformdata.modalNum} 
+                                
                                 className="form-control"
                                 id="manufacturer-brand-input"
                                 placeholder="Enter Product Modal Number"
-                                {...register("modalNum", {
-                                  required: false,
-                                })}
+                                onChange={handleChange} 
+                                // {...register("modalNum", {
+                                //   required: false,
+                                // })}
                               />
                             </div>
                           </div>
@@ -480,12 +530,15 @@ function Addproduct() {
                               <input
                                 type="text"
                                 name="power"
+                                value={newformdata.power} 
+                                onChange={handleChange} 
+                                
                                 className="form-control"
                                 id="manufacturer-brand-input"
                                 placeholder="Enter Producut Power"
-                                {...register("power", {
-                                  required: false,
-                                })}
+                                // {...register("power", {
+                                //   required: false,
+                                // })}
                               />
                             </div>
                           </div>
@@ -500,12 +553,14 @@ function Addproduct() {
                               <input
                                 type="text"
                                 name="dimensions"
+                                value={newformdata.dimensions} 
+                                onChange={handleChange} 
                                 className="form-control"
                                 id="manufacturer-brand-input"
                                 placeholder="Enter product Dimensions"
-                                {...register("dimensions", {
-                                  required: false,
-                                })}
+                                // {...register("dimensions", {
+                                //   required: false,
+                                // })}
                               />
                             </div>
                           </div>
@@ -523,12 +578,14 @@ function Addproduct() {
                               <input
                                 type="text"
                                 name="weight"
+                                value={newformdata.weight} 
+                                onChange={handleChange} 
                                 className="form-control"
                                 id="stocks-input"
                                 placeholder="Weight"
-                                {...register("weight", {
-                                  required: false,
-                                })}
+                                // {...register("weight", {
+                                //   required: false,
+                                // })}
                               />
                             </div>
                           </div>
@@ -543,12 +600,14 @@ function Addproduct() {
                               <input
                                 type="text"
                                 name="colour"
+                                value={newformdata.colour} 
+                                onChange={handleChange} 
                                 className="form-control"
                                 id="stocks-input"
                                 placeholder="Colour"
-                                {...register("colour", {
-                                  required: false,
-                                })}
+                                // {...register("colour", {
+                                //   required: false,
+                                // })}
                               />
                             </div>
                           </div>
@@ -563,12 +622,14 @@ function Addproduct() {
                               <input
                                 type="text"
                                 name="position"
+                                value={newformdata.position} 
+                                onChange={handleChange} 
                                 className="form-control"
                                 id="stocks-input"
                                 // placeholder="SKU Number"
-                                {...register("position", {
-                                  required: false,
-                                })}
+                                // {...register("position", {
+                                //   required: false,
+                                // })}
                               />
                             </div>
                           </div>
@@ -584,12 +645,14 @@ function Addproduct() {
                               <input
                                 type="text"
                                 name="supplier"
+                                value={newformdata.supplier}                                
+                                onChange={handleChange} 
                                 className="form-control"
                                 id="orders-input"
                                 placeholder="Supplier"
-                                {...register("supplier", {
-                                  required: false,
-                                })}
+                                // {...register("supplier", {
+                                //   required: false,
+                                // })}
                               />
                             </div>
                           </div>
@@ -613,12 +676,14 @@ function Addproduct() {
                               <input
                                 type="text"
                                 name="MetaTitle"
+                                value={newformdata.MetaTitle} 
+                                onChange={handleChange} 
                                 className="form-control"
                                 placeholder="Enter meta title"
                                 id="meta-title-input"
-                                {...register("MetaTitle", {
-                                  required: false,
-                                })}
+                                // {...register("MetaTitle", {
+                                //   required: false,
+                                // })}
                               />
                             </div>
                           </div>
@@ -634,12 +699,14 @@ function Addproduct() {
                               <input
                                 type="text"
                                 name="metaKey"
+                                value={newformdata.metaKey}
+                                onChange={handleChange} 
                                 className="form-control"
                                 placeholder="Enter meta keywords"
                                 id="meta-keywords-input"
-                                {...register("metaKey", {
-                                  required: false,
-                                })}
+                                // {...register("metaKey", {
+                                //   required: false,
+                                // })}
                               />
                             </div>
                           </div>
@@ -655,12 +722,14 @@ function Addproduct() {
                           <textarea
                             className="form-control"
                             name="metaDescription"
+                            value={newformdata.metaDescription} 
+                            onChange={handleChange} 
                             id="meta-description-input"
                             placeholder="Enter meta description"
                             rows="3"
-                            {...register("metaDescription", {
-                              required: false,
-                            })}
+                            // {...register("metaDescription", {
+                            //   required: false,
+                            // })}
                           ></textarea>
                         </div>
                       </div>
@@ -669,13 +738,13 @@ function Addproduct() {
                 </div>
                 <div className="text-end mb-3">
                   <button type="submit" className="btn btn-success w-sm">
-                    Submit
+                    Save
                   </button>
                 </div>
               </div>
 
               <div className="col-lg-4">
-                <div className="card">
+                {/* <div className="card">
                   <div className="card-header">
                     <h5 className="card-title mb-0">Publish</h5>
                   </div>
@@ -691,11 +760,13 @@ function Addproduct() {
                         <input
                           type="date"
                           name=" Publish_Date"
+                          value={newformdata.Publish_Date} 
                           id="datepicker-publish-input"
                           className="form-control"
                           placeholder="Enter publish date"
                           data-provider="flatpickr"
                           data-date-format="d.m.y"
+                          
                           data-enable-time
                           {...register("Publish_Date", {
                             required: true,
@@ -720,12 +791,14 @@ function Addproduct() {
                         <input
                           type="date"
                           name=" Updated_On"
+                          value={newformdata.Updated_On} 
                           id="datepicker-publish-input"
                           className="form-control"
                           placeholder="Enter publish date"
                           data-provider="flatpickr"
                           data-date-format="d.m.y"
                           data-enable-time
+                          
                           {...register("Updated_On", {
                             required: false,
                           })}
@@ -744,6 +817,8 @@ function Addproduct() {
                         <input
                           type="text"
                           name="Publish_By"
+                          value={newformdata.Publish_By} 
+                           
                           id="datepicker-publish-input"
                           className="form-control"
                           placeholder="Enter Publisher name"
@@ -754,7 +829,7 @@ function Addproduct() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="card">
                   <div className="card-header">
@@ -768,7 +843,9 @@ function Addproduct() {
                       className="form-select"
                       id="choices-category-input"
                       name="category"
-                      value={category}
+                      value={newformdata.category}  
+                      // value={category}
+                      // onChange={handleChange} 
                       onChange={changeCategory}
                       // data-choices
                       // data-choices-search-false
@@ -800,7 +877,8 @@ function Addproduct() {
                       className="form-select"
                       id="choices-category-input"
                       name="subCategory"
-                      value={subcat}
+                      value={newformdata.subCategory} 
+                      // value={subcat}
                       onChange={changeState}
                       // data-choices
                       // data-choices-search-false
@@ -837,11 +915,13 @@ function Addproduct() {
                       className="form-select"
                       id="choices-category-input"
                       name="featured"
+                      value={newformdata.featured} 
+                      onChange={handleChange}  
                       data-choices
                       data-choices-search-false
-                      {...register("featured", {
-                        required: false,
-                      })}
+                      // {...register("featured", {
+                      //   required: false,
+                      // })}
                     >
                       {featured?.map((ele) => {
                         return (
@@ -868,12 +948,14 @@ function Addproduct() {
                     </p>
                     <textarea
                       name="shortDiscription"
+                      value={newformdata.shortDiscription} 
+                      onChange={handleChange} 
                       className="form-control"
                       placeholder="Must enter minimum of a 100 characters"
                       rows="3"
-                      {...register("shortDiscription", {
-                        required: false,
-                      })}
+                      // {...register("shortDiscription", {
+                      //   required: false,
+                      // })}
                     ></textarea>
                   </div>
                 </div>
@@ -887,17 +969,4 @@ function Addproduct() {
   );
 }
 
-export default Addproduct;
-
-function convertToBase64(file){
-  return new Promise((resolve, reject) => {
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(file);
-    fileReader.onload = () => {
-      resolve(fileReader.result)
-    };
-    fileReader.onerror = (error) => {
-      reject(error)
-    }
-  })
-}
+export default Editproduct;
