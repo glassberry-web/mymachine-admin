@@ -675,7 +675,7 @@ function Addproduct() {
               </div>
 
               <div className="col-lg-4">
-                <div className="card">
+                {/* <div className="card">
                   <div className="card-header">
                     <h5 className="card-title mb-0">Publish</h5>
                   </div>
@@ -754,7 +754,7 @@ function Addproduct() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="card">
                   <div className="card-header">

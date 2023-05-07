@@ -149,7 +149,7 @@ function Editproduct() {
       formData.append("shortDiscription", data.shortDiscription);
       // formData.append("_id", _id);
 
-      const update = await axios.put(`/editProduct/${id}`, newformdata, {
+      const update = await axios.put(`/editProduct`, newformdata, {
         headers: { "Content-Type": "multipart/form-data" },
       });      
       console.log("update===>", update.data.result);
