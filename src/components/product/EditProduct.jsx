@@ -34,7 +34,7 @@ function Editproduct() {
   // const [product_name, setProduct_name] = useState();
 
   useEffect(() => {
-    axios.get(`/editProduct/${id}`)
+    axios.get(`/enquiry/editProduct/${id}`)
       .then(response => setFormdata(response.data))
       .catch(error => console.log(error));
   }, [id]);
@@ -149,7 +149,7 @@ function Editproduct() {
       formData.append("shortDiscription", data.shortDiscription);
       // formData.append("_id", _id);
 
-      const update = await axios.put(`/editProduct`, newformdata, {
+      const update = await axios.put(`/enquiry/updateProduct/${id}`, newformdata, {
         headers: { "Content-Type": "multipart/form-data" },
       });      
       console.log("update===>", update.data.result);
@@ -159,7 +159,7 @@ function Editproduct() {
           position: toast.POSITION.TOP_RIGHT,
         });
         // navigate("/vendorAdminPanel");
-        navigate("/ProductList")
+        navigate("/sidebarDashboards")
       }
     } catch (error) {
       console.log("post error===>", error.message);

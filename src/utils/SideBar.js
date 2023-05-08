@@ -21,7 +21,7 @@ const SideBar = ({
   const [totalPage, setTotalPage] = useState(0);
   const [date, setDate] = useState("");
   // const { _id } = JSON.parse(localStorage.getItem("vendor")) || "";
-  console.log("_id====>", _id);
+  console.log("_sidebarid====>", _id);
   // console.log("pageNo===>",pageNo)
   // const URL=/enquiry/superAdminProductList;
   const enquiryDetail = async () =>
@@ -43,18 +43,24 @@ const SideBar = ({
   }, [pageNo, _id]);
   const navigate = useNavigate();
   const deletePost = async(id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this product?");
     console.log(id);
-
-  const deletedData = await axios
-      .delete(`/delete/${id}`)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-      if (deletedData.status === 200) {
-        toast.success("Deleted Successfully", {
-          position: toast.POSITION.TOP_RIGHT,
-        });   
-    }
-    window.location.reload();
+    if(confirmDelete){
+  const deletedData =  
+    await axios
+    .delete(`/enquiry/deleteProduct/${id}`)
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));
+    if (deletedData.status === 200) {
+      toast.success("Deleted Successfully", {
+        position: toast.POSITION.TOP_RIGHT,
+      }); 
+      // window.location.reload();  
+  }
+  
+  navigate("/sidebarDashboards")
+  }
+ 
   };
 
   const pages = new Array(totalPage).fill(null).map((v, i) => i);
@@ -204,32 +210,32 @@ const SideBar = ({
                                 </td>
                               );
                             })}
-                            {/* {
-                               title ==="Product List" ?( <td data-column-id="actions" className="gridjs-td">
-                               <Link to={`/superAdminEditProduct/${item._id}`} state={{id:`${item._id}`}}>
-                               <button
-                                 className="btn btn-sm btn-soft-warning btnml" 
+                             {
+                            //    title ==="Product List" ?( <td data-column-id="actions" className="gridjs-td">
+                            //    <Link to={`/superAdminEditProduct/${item._id}`} state={{id:`${item._id}`}}>
+                            //    <button
+                            //      className="btn btn-sm btn-soft-warning btnml" 
                              
-                               >
-                               <BiEdit fontSize="1.6rem" title="Edit"/>
-                               </button>
-                               </Link>
-                               <button className="btn btn-sm btn-soft-danger" onClick={() => deletePost(item._id)}>
-                               <MdDeleteOutline fontSize="1.6rem" title="Delete" />
-                               </button>
-                             </td>):( <td data-column-id="actions" className="gridjs-td">
-                               <button
-                                 className="btn btn-sm btn-soft-info"
-                                 onClick={() => {
-                                   onClick(item._id);
-                                 }}
-                               >
-                                 Approve Now
-                               </button>
-                               <button className="btn btn-sm btn-soft-warning">
-                                 Deny
-                               </button>
-                             </td>) } */
+                            //    >
+                            //    <BiEdit fontSize="1.6rem" title="Edit"/>
+                            //    </button>
+                            //    </Link>
+                            //    <button className="btn btn-sm btn-soft-danger" onClick={() => deletePost(item._id)}>
+                            //    <MdDeleteOutline fontSize="1.6rem" title="Delete" />
+                            //    </button>
+                            //  </td>):( <td data-column-id="actions" className="gridjs-td">
+                            //    <button
+                            //      className="btn btn-sm btn-soft-info"
+                            //      onClick={() => {
+                            //        onClick(item._id);
+                            //      }}
+                            //    >
+                            //      Approve Now
+                            //    </button>
+                            //    <button className="btn btn-sm btn-soft-warning">
+                            //      Deny
+                            //    </button>
+                            //  </td>) 
                             }
                             
                            
