@@ -231,7 +231,7 @@ const SideBar = ({
                             })}
                              {
                                title ==="Product List" ?( <td data-column-id="actions" className="gridjs-td">
-                                 <Link  to={{ProductDetailLink}}  state={item._id}>
+                                 <Link  to={ProductDetailLink}  state={item._id}>
               
               <button className="btn btn-sm btn-soft-primary btnml">
               <FaRegEye fontSize="1.2rem" title="View" />
