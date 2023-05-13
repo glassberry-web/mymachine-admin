@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "../api/axios";
 import { BiEdit } from "react-icons/bi";
+import {FaRegEye} from "react-icons/fa"
 import {MdDeleteOutline} from "react-icons/md"
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import FullPageLoader from "../components/FullPageLoader";
 const SideBar = ({
   title,
   onClick,
@@ -16,6 +18,7 @@ const SideBar = ({
   console.log("link===>", AddProductlink);
   console.log("admin=>",  URL);
   const [response, setResponse] = useState([]);
+  const [loading, setLoading] = useState(false)
   const [search, setSearch] = useState([]);
   const [pageNo, setPageNo] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
@@ -43,23 +46,38 @@ const SideBar = ({
   }, [pageNo, _id]);
   const navigate = useNavigate();
   const deletePost = async(id) => {
+    setLoading(true);  
     const confirmDelete = window.confirm("Are you sure you want to delete this product?");
     console.log(id);
+    try{
     if(confirmDelete){
   const deletedData =  
-    await axios
-    .delete(`/enquiry/deleteProduct/${id}`)
-    .then((res) => console.log(res))
-    .catch((err) => console.log(err));
+   await axios.delete(`/enquiry/deleteProduct/${id}`, {
+      headers: { "Content-Type": "multipart/form-data" }
+    });
+    
+    console.log(deletedData)
     if (deletedData.status === 200) {
-      toast.success("Deleted Successfully", {
+   
+      toast.success("Success Notification !", {
         position: toast.POSITION.TOP_RIGHT,
-      }); 
-      // window.location.reload();  
-  }
+      });
+      // navigate("/vendorAdminPanel");
+      navigate("/ProductList")
+    }
+    // .then((res) => {const updatedItems = response.filter(item => item._id !== id);
+    //    setResponse(updatedItems);
+    //    window.location.reload(); 
+    // })
+    // .catch((err) => console.log(err));
+   
   
-  navigate("/sidebarDashboards")
+  // navigate("/sidebarDashboards")
   }
+}catch (error) {
+  setLoading(false);  
+  console.log("Delete error===>", error.message);
+}
  
   };
 
@@ -79,6 +97,7 @@ const SideBar = ({
   console.log("dummy3====>", date);
   return (
     <>
+     {/* {loading && <FullPageLoader loading={loading}/> } */}
       <div className="container-fluid">
         <div className="card">
           <div className="card-header">
@@ -100,7 +119,7 @@ const SideBar = ({
                         className="gridjs-input gridjs-search-input"
                       />
                     </div>
-                    <div className="hstack gap-2">
+                    <div className="hstack floatr gap-2">
                       <Link className="btn btn-primary" to={AddProductlink}>
                         <i className="ri-add-fill me-1 align-bottom"></i> Add
                         Product
@@ -168,7 +187,7 @@ const SideBar = ({
                                 className="gridjs-sort gridjs-sort-neutral"
                               ></button>
                             </th> */}
-                            {/* <th
+                            <th
                               data-column-id="actions"
                               className="gridjs-th gridjs-th-sort"
                               tabIndex="0"
@@ -181,7 +200,7 @@ const SideBar = ({
                                 title="Sort column ascending"
                                 className="gridjs-sort gridjs-sort-neutral"
                               ></button>
-                            </th> */}
+                            </th>
                           </tr>
                         </thead>
                       )}
@@ -211,31 +230,38 @@ const SideBar = ({
                               );
                             })}
                              {
-                            //    title ==="Product List" ?( <td data-column-id="actions" className="gridjs-td">
-                            //    <Link to={`/superAdminEditProduct/${item._id}`} state={{id:`${item._id}`}}>
-                            //    <button
-                            //      className="btn btn-sm btn-soft-warning btnml" 
+                               title ==="Product List" ?( <td data-column-id="actions" className="gridjs-td">
+                                 <Link  to={{ProductDetailLink}}  state={item._id}>
+              
+              <button className="btn btn-sm btn-soft-primary btnml">
+              <FaRegEye fontSize="1.2rem" title="View" />
+              </button>
+              </Link>
+                               <Link to={`/superAdminEditProduct/${item._id}`} state={{id:`${item._id}`}}>
+                               <button
+                                 className="btn btn-sm btn-soft-warning btnml" 
                              
-                            //    >
-                            //    <BiEdit fontSize="1.6rem" title="Edit"/>
-                            //    </button>
-                            //    </Link>
-                            //    <button className="btn btn-sm btn-soft-danger" onClick={() => deletePost(item._id)}>
-                            //    <MdDeleteOutline fontSize="1.6rem" title="Delete" />
-                            //    </button>
-                            //  </td>):( <td data-column-id="actions" className="gridjs-td">
-                            //    <button
-                            //      className="btn btn-sm btn-soft-info"
-                            //      onClick={() => {
-                            //        onClick(item._id);
-                            //      }}
-                            //    >
-                            //      Approve Now
-                            //    </button>
-                            //    <button className="btn btn-sm btn-soft-warning">
-                            //      Deny
-                            //    </button>
-                            //  </td>) 
+                               >
+                               <BiEdit fontSize="1.2rem" title="Edit"/>
+                               </button>
+                               </Link>
+                               <button className="btn btn-sm btn-soft-danger" onClick={() => deletePost(item._id)}>
+                               <MdDeleteOutline fontSize="1.2rem" title="Delete" />
+                               </button>
+                              
+                             </td>):( <td data-column-id="actions" className="gridjs-td">
+                               <button
+                                 className="btn btn-sm btn-soft-info"
+                                 onClick={() => {
+                                   onClick(item._id);
+                                 }}
+                               >
+                                 Approve Now
+                               </button>
+                               <button className="btn btn-sm btn-soft-warning">
+                                 Deny
+                               </button>
+                             </td>) 
                             }
                             
                            

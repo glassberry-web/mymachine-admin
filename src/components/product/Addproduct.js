@@ -2,7 +2,7 @@ import { ProductCategory, featured } from "./ProductCategory";
 import { useForm } from "react-hook-form";
 import { ADD_PRODUCT, DELETE_PRODUCT } from "../../api/apiEndpoints";
 import parse from 'html-react-parser';
-
+import FullPageLoader from "../FullPageLoader";
 import axios from "../../api/axios";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -12,6 +12,7 @@ import JoditEditor from 'jodit-react';
 import { useState, useEffect, useRef, useMemo } from "react";
 
 function Addproduct() {
+  const [loading, setLoading] = useState(false)
   const editor = useRef(null);
   const [content, setContent] = useState('');
   const [image, setImage] = useState();
@@ -93,6 +94,7 @@ function Addproduct() {
     console.log("data===>", data);
 
     try {
+      setLoading(true)
       formData.append("product_name", data.product_name);
       formData.append("discription", data.discription);
       formData.append("MetaTitle", data.MetaTitle);
@@ -128,18 +130,21 @@ function Addproduct() {
       // formData.append("_id", _id);
 
       const detail = await axios.post(ADD_PRODUCT, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });      
+        headers: {"Content-Type": "multipart/form-data"},
+      });  
+      setLoading(false);      
       console.log("detail===>", detail.data.result);
       console.log("successful");
       if (detail.status === 200) {
-        toast.success("Success Notification !", {
+        setLoading(false);  
+        toast.success("Product Added Successfuly !", {
           position: toast.POSITION.TOP_RIGHT,
         });
         // navigate("/vendorAdminPanel");
         navigate("/ProductList")
       }
     } catch (error) {
+      setLoading(false);  
       console.log("post error===>", error.message);
     }
   };
@@ -155,6 +160,7 @@ function Addproduct() {
   }
   return (
     <>
+    {loading && <FullPageLoader loading={loading}/> }
       <div className="page-content">
         <div className="container-fluid">
           <div className="row">

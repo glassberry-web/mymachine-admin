@@ -29,8 +29,11 @@ td.gridjs-td {
   background-color: #fff !important;
 }
 
-.hstack{
+/* .hstack{
   float: right;
+} */
+.floatr{
+  float: right !important;
 }
 /* .btn {
   margin-left: 10px !important;

@@ -5655,38 +5655,38 @@ a, button {
     background-color: var(--vz-card-bg-custom);
 }
 .nav-success.nav-tabs-custom .nav-link.active {
-    color: #11d1b7;
+    color: #fcbe00;
     background-color: var(--vz-card-bg-custom);
 }
 .nav-success.nav-tabs-custom .nav-link.active::after {
-    background-color: #11d1b7;
+    background-color: #fcbe00;
 }
 .nav-success.arrow-navtabs .nav-link.active::before {
-    border-top-color: #11d1b7;
+    border-top-color: #fcbe00;
 }
 .nav-success.custom-verti-nav-pills .nav-link.active::before {
-    border-left-color: #11d1b7;
+    border-left-color: #fcbe00;
 }
 .nav-info .nav-link.active {
     color: #fff;
-    background-color: #73dce9;
+    background-color: #fcbe00;
 }
 .nav-info.nav-tabs .nav-link.active {
-    color: #73dce9;
+    color: #fcbe00;
     background-color: var(--vz-card-bg-custom);
 }
 .nav-info.nav-tabs-custom .nav-link.active {
-    color: #73dce9;
+    color: #fcbe00;
     background-color: var(--vz-card-bg-custom);
 }
 .nav-info.nav-tabs-custom .nav-link.active::after {
-    background-color: #73dce9;
+    background-color: #fcbe00;
 }
 .nav-info.arrow-navtabs .nav-link.active::before {
-    border-top-color: #73dce9;
+    border-top-color: #fcbe00;
 }
 .nav-info.custom-verti-nav-pills .nav-link.active::before {
-    border-left-color: #73dce9;
+    border-left-color: #fcbe00;
 }
 .nav-warning .nav-link.active {
     color: #fff;
@@ -14450,6 +14450,6 @@ padding-bottom: 50px;
     background-size: 100%;
 }
 .btnml{
-    margin-right: 1rem;
+    margin-right: 0.5rem;
 }
 

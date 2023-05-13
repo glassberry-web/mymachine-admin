@@ -2,7 +2,7 @@ import { ProductCategory, featured } from "./ProductCategory";
 import { useForm } from "react-hook-form";
 import { ADD_PRODUCT, DELETE_PRODUCT, Edit_PRODUCT } from "../../api/apiEndpoints";
 import parse from 'html-react-parser';
-
+import FullPageLoader from "../FullPageLoader";
 import axios from "../../api/axios";
 import { Link, useNavigate, useParams, useLocation} from "react-router-dom";
 
@@ -10,13 +10,27 @@ import { ToastContainer, toast } from "react-toastify";
 import JoditEditor from 'jodit-react';
 
 import { useState, useEffect, useRef, useMemo } from "react";
+// import FadeLoader from "react-spinners/FadeLoader";
+const override = {
+  display: "block",
+  // justifyContent:"center",
+  // alignItems:"center",
+  // height:"100vh",
+  margin: "0 auto",
+  position:"absolute",
+  // zIndex:99,
+  // backgroundColor : "black",
+  borderColor:"red",
+};
 
 function Editproduct() {
+  const [loading, setLoading] = useState(false)
   const editor = useRef(null);
+  const ref = useRef(null);
   const [content, setContent] = useState('');
   const [image, setImage] = useState();
   const [preview, setPreview] = useState()
-  const [category, SetCategory] = useState('--Category--');
+  const [category, SetCategory] = useState([]);
   const [subcat, SetSubCat] = useState('');
   const [subcategory, SetSubCategory] = useState([]);
   const [imageUrl, setImageUrl] = useState(null);
@@ -37,7 +51,7 @@ function Editproduct() {
     axios.get(`/enquiry/editProduct/${id}`)
       .then(response => setFormdata(response.data))
       .catch(error => console.log(error));
-  }, [id]);
+  }, []);
   console.log("foredit", newformdata);
 
   const handleChange = (event) => {
@@ -55,15 +69,32 @@ function Editproduct() {
   // }
 
 
-  const changeCategory = (event) =>{
-    // SetCategory(event.target.value);
-    SetCategory({...newformdata, [event.target.name]: event.target.value})
+  // const changeCategory = (event) =>{
+  //   SetCategory(event.target.value);
+  //   SetCategory({...newformdata, category: event.target.value})
+  //   console.log("category", category);
+  //   SetSubCategory(ProductCategory.find(cat => cat.Category === event.target.value).subCategory);
+  // }
+  // const changeState = (event) => {
+  //   SetSubCat({...newformdata, [event.target.name]: event.target.value});
+  //   subcat === undefined  ? SetSubCat("") :  SetSubCat({...newformdata, subCategory: event.target.value});
+  // }
+  // useEffect(()=>{
+    
+  // }, [])
+  const changeCategory = async(event) =>{    
+   await SetCategory(event.target.value);    
+   await setFormdata({...newformdata, category:category})
     console.log("category", category);
-    SetSubCategory(ProductCategory.find(cat => cat.Category === event.target.value).subCategory);
+    
+    SetSubCategory(ProductCategory.find(cat => cat.Category === newformdata.category).subCategory);
+    // setFormdata(...newformdata)
   }
   const changeState = (event) => {
-    SetSubCat({...newformdata, [event.target.name]: event.target.value});
-    subcat === undefined  ? SetSubCat("") :  SetSubCat({...newformdata, [event.target.name]: event.target.value});
+    SetSubCat(event.target.value);
+    setFormdata({...newformdata, subCategory:subcat})
+    subcat === undefined ? setFormdata({...newformdata, subCategory:""}) :  setFormdata({...newformdata, subCategory:subcat});
+
   }
 
   // convert object url to images
@@ -90,8 +121,8 @@ function Editproduct() {
 
    
     if (event.target && event.target.files[0]) {
-      // setImage(event.target.files[0]);
-      setFormdata({ ...newformdata, image:event.target.files[0]});
+      setImage(event.target.files[0]);
+      setFormdata({ ...newformdata, image:image});
       // const reader = new FileReader();
 
       // reader.onloadend = () => {
@@ -112,14 +143,16 @@ function Editproduct() {
   // const parseContent = parse(content)
   console.log("content===>", content); 
   const submitHandler = async (data) => {
+  
     console.log("data===>", data);
 
     try {
-      formData.append("product_name", data.product_name);
-      formData.append("discription", data.discription);
-      formData.append("MetaTitle", data.MetaTitle);
-      formData.append("Publish_By", data.Publish_By);
-      formData.append("image", image);
+      setLoading(true)
+      // formData.append("product_name", data.product_name);
+      // formData.append("discription", data.discription);
+      // formData.append("MetaTitle", data.MetaTitle);
+      // formData.append("Publish_By", data.Publish_By);
+      // formData.append("image", image);
       // try {
       //   const response = await axios.post('/addProduct', formData);
       //   setImageUrl(response.data);
@@ -128,40 +161,46 @@ function Editproduct() {
       //   console.log(error);
       // }
           
-      formData.append("Publish_Date", data.Publish_Date);
-      formData.append("Updated_On", data.Updated_On);
-      formData.append("brand", data.brand);
-      formData.append("product_content",  content);
+      // formData.append("Publish_Date", data.Publish_Date);
+      // formData.append("Updated_On", data.Updated_On);
+      // formData.append("brand", data.brand);
+      // formData.append("product_content",  content);
       // formData.append("product_content",  parseContent.props.children);
-      formData.append("category", category);
-      formData.append("subCategory", subcat);
-      formData.append('featured', data.featured)
-      formData.append("colour", data.colour);
-      formData.append("manufacturerName", data.manufacturerName);
-      formData.append("metaDescription", data.metaDescription);
-      formData.append("metaKey", data.metaKey);
-      formData.append("modalNum", data.modalNum);
-      formData.append("dimensions", data.dimensions);
-      formData.append("position", data.position);
-      formData.append("supplier", data.supplier);
-      formData.append("power", data.power);
-      formData.append("weight", data.weight);
-      formData.append("shortDiscription", data.shortDiscription);
+      // formData.append("category", category);
+      // formData.append("subCategory", subcat);
+      // formData.append('featured', data.featured)
+      // formData.append("colour", data.colour);
+      // formData.append("manufacturerName", data.manufacturerName);
+      // formData.append("metaDescription", data.metaDescription);
+      // formData.append("metaKey", data.metaKey);
+      // formData.append("modalNum", data.modalNum);
+      // formData.append("dimensions", data.dimensions);
+      // formData.append("position", data.position);
+      // formData.append("supplier", data.supplier);
+      // formData.append("power", data.power);
+      // formData.append("weight", data.weight);
+      // formData.append("shortDiscription", data.shortDiscription);
       // formData.append("_id", _id);
 
       const update = await axios.put(`/enquiry/updateProduct/${id}`, newformdata, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });      
+        // headers: { "Content-Type": "multipart/form-data" },
+        headers: { "Content-Type": "application/json" },
+      }); 
+      setLoading(false);     
       console.log("update===>", update.data.result);
-      console.log("successful");
+      console.log("successful");     
       if (update.status === 200) {
-        toast.success("Success Notification !", {
+        setLoading(false);
+        toast.success("Product Updated Successfully !", {
           position: toast.POSITION.TOP_RIGHT,
         });
+       
         // navigate("/vendorAdminPanel");
-        navigate("/sidebarDashboards")
+        
+        navigate("/productList")
       }
     } catch (error) {
+      setLoading(false);
       console.log("post error===>", error.message);
     }
   };
@@ -187,12 +226,15 @@ function Editproduct() {
 );
   return (
     <>
-      <div className="page-content">
+       {loading && <FullPageLoader loading={loading}/> }
+      <div className="page-content">     
+     
         <div className="container-fluid">
+       
           <div className="row">
             <div className="col-12">
               <div className="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 className="mb-sm-0">Add Product</h4>
+                <h4 className="mb-sm-0">Edit Product</h4>
                 <div className="page-title-right">
                   <ol className="breadcrumb m-0">
                     <li className="breadcrumb-item">
@@ -204,7 +246,7 @@ function Editproduct() {
               </div>
             </div>
           </div>
-
+          
           <form
             onSubmit={handleSubmit(submitHandler)}
             id="createproduct-form"
@@ -843,7 +885,8 @@ function Editproduct() {
                       className="form-select"
                       id="choices-category-input"
                       name="category"
-                      value={newformdata.category}  
+                      value={newformdata.category}
+                      
                       // value={category}
                       // onChange={handleChange} 
                       onChange={changeCategory}
@@ -963,6 +1006,7 @@ function Editproduct() {
             </div>
           </form>
         </div>
+         
       </div>
       <ToastContainer />
     </>

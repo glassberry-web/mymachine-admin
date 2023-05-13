@@ -51,6 +51,7 @@ function AllRoutes() {
         <Route path="/Approvedlist" element={<ApprovedList />} />
         <Route path="/Productlist" element={<ProductList />} />
         <Route path="/AddCompany" element={<AddCompany />} />
+        <Route path="/ProductDetail" element={<ProductDetail />} />
         <Route path="/companyDetailPage" element={<CompanyDetail />} />
         {/* <Route path="/AddProduct" element={<Addproduct />} /> */}
         {/* <Route path="/ProductDetail" element={<ProductDetail />} /> */}
