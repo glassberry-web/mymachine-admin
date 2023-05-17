@@ -8,10 +8,14 @@ import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import SuperAdminAuthReducer from "./reducers/superAdmin/SuperAdminAuthSlice";
 import vendorAuthSlice from "./reducers/vendor/VendorAuthSlice";
+import statusSlice from "./reducers/status/statusSlice";
+import responseDataSlice from "./reducers/filter/FilterSlice";
 const store = configureStore({
   reducer: {
     superAdminAuth: SuperAdminAuthReducer.reducer,
     vendorAuth: vendorAuthSlice.reducer,
+    status:statusSlice.reducer,
+    data:responseDataSlice.reducer
   },
 });
 

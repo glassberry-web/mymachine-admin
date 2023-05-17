@@ -1,42 +1,72 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
-import { BiEdit } from "react-icons/bi";
-import {FaRegEye} from "react-icons/fa"
-import {MdDeleteOutline} from "react-icons/md"
-import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import FullPageLoader from "../components/FullPageLoader";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux/es/exports";
+
+import ProductList from "../components/product/ProductList";
+import CompanyList from "../components/company/CompanyList";
+import FilterButton from "./FilterButton";
+import { responseDataActions } from "../reducers/filter/FilterSlice";
 const SideBar = ({
   title,
   onClick,
   URL,
+  Filter,
   _id,
   AddProductlink,
-  ProductDetailLink
+  ProductDetailLink,
+  tag,
+  tag_2,
+  onDelete,
+  addProduct,
+  AddVendorLink,
+  statusHandler,
+  updatedStatus,
+  latestStatus,
+  navigateTo,
 }) => {
-  console.log("link===>", AddProductlink);
-  console.log("admin=>",  URL);
+  console.log("linkv===>", addProduct);
+  console.log("URL===>", URL === "/enquiry/superAdminProductList");
   const [response, setResponse] = useState([]);
-  const [loading, setLoading] = useState(false)
+  const [brandFilter, setBrandFilter] = useState([]);
   const [search, setSearch] = useState([]);
+  const [columns, setColumns] = useState([]);
   const [pageNo, setPageNo] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
+  const [isStatus, setStatus] = useState("Status");
   const [date, setDate] = useState("");
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
+  const hideShow = () => setShow(false);
+  const dispatch = useDispatch();
+
   // const { _id } = JSON.parse(localStorage.getItem("vendor")) || "";
-  console.log("_sidebarid====>", _id);
+  // const status=useSelector((state)=>{ return state.status.status})
+  // console.log("status====>",status)
+  console.log("_id====>", _id);
   // console.log("pageNo===>",pageNo)
   // const URL=/enquiry/superAdminProductList;
   const enquiryDetail = async () =>
     await axios
       .get(`${URL}?page=${pageNo}&id=${_id}`)
       .then((res) => {
-        console.log(res?.data);
+        console.log("res====>", res?.data);
+
+        // setting data for the table
         setResponse(res?.data?.result);
+        dispatch(responseDataActions.responseData(res?.data?.result));
+        // seting columns for the data table
+        let col = res?.data?.result ? Object.keys(res?.data?.result[0]) : [];
+        console.log("col===>", col);
+        setColumns(col);
+
         setSearch(res?.data?.result);
         setTotalPage(res?.data?.totalPages);
         setDate(res?.data?.date);
+        // navigate(navigateTo)
       })
+      .then(() => {})
       .catch((error) => {
         console.log(error.message);
       });
@@ -44,60 +74,60 @@ const SideBar = ({
   useEffect(() => {
     enquiryDetail();
   }, [pageNo, _id]);
-  const navigate = useNavigate();
-  const deletePost = async(id) => {
-    setLoading(true);  
-    const confirmDelete = window.confirm("Are you sure you want to delete this product?");
-    console.log(id);
-    try{
-    if(confirmDelete){
-  const deletedData =  
-   await axios.delete(`/enquiry/deleteProduct/${id}`, {
-      headers: { "Content-Type": "multipart/form-data" }
-    });
-    
-    console.log(deletedData)
-    if (deletedData.status === 200) {
-   
-      toast.success("Success Notification !", {
-        position: toast.POSITION.TOP_RIGHT,
-      });
-      // navigate("/vendorAdminPanel");
-      navigate("/ProductList")
-    }
-    // .then((res) => {const updatedItems = response.filter(item => item._id !== id);
-    //    setResponse(updatedItems);
-    //    window.location.reload(); 
-    // })
-    // .catch((err) => console.log(err));
-   
-  
-  // navigate("/sidebarDashboards")
-  }
-}catch (error) {
-  setLoading(false);  
-  console.log("Delete error===>", error.message);
-}
- 
-  };
-
-  const pages = new Array(totalPage).fill(null).map((v, i) => i);
+  const products = useSelector((state) => {
+    return state.data.brand;
+  });
+  // console.log("product====>", products);
+  // setBrandFilter(products.productDetails)
+  // if(products){
+  //   setResponse(products.productDetails)
+  // }
+  const pages = new Array(totalPage).fill(null).map((_v, i) => i);
 
   const handleSearch = (e) => {
-    let value = e.target.value.toLowerCase();
+    let value = e.target.value;
+    console.log("value---->",value)
     let result = [];
-    console.log(value);
+    console.log("v---->", value);
     result = response.filter((data) => {
-      return data. company_name.search(value) !== -1;
+      // return data.company_name.search(value) !== -1;
+      return data.product_name.search(value) !== -1;
     });
     setSearch(result);
   };
+
+  useEffect(() => {
+    if (products?.productDetails) {
+      setResponse(products?.productDetails);
+    }
+  }, [products]);
+
   console.log("response====>", response, title);
   console.log("dummy2====>", search);
-  console.log("dummy3====>", date);
+  // let col_2=columns?.shift()
+  // console.log("columns====>", columns.shift());
+  // console.log("dummy3====>", date);
+  const clickHandler = (item, id, index) => {
+    console.log("item====>", item);
+    onClick(item);
+    statusHandler(item);
+    // const statusUpdate = search.map((ele, i) => {
+    //   if (i === index) {
+    //     // setStatus("pending");
+    //     // return;
+    //     return { ...ele, id };
+    //   } else {
+    //     return ele;
+    //   }
+    // });
+    // setSearch(statusUpdate);
+  };
+  console.log("isStatus===>", isStatus);
+  console.log(isStatus === "pending");
+  console.log("dummy3====>", search);
+
   return (
     <>
-     {/* {loading && <FullPageLoader loading={loading}/> } */}
       <div className="container-fluid">
         <div className="card">
           <div className="card-header">
@@ -120,155 +150,282 @@ const SideBar = ({
                       />
                     </div>
                     <div className="hstack floatr gap-2">
-                      <Link className="btn btn-primary" to={AddProductlink}>
-                        <i className="ri-add-fill me-1 align-bottom"></i> Add
-                        Product
-                      </Link>
+                      {AddProductlink && (
+                        <Link
+                          className="btn btn-outline-primary custom-toggle"
+                          to={AddProductlink}
+                        >
+                          <i className="ri-add-fill me-1 align-bottom"></i>
+                          {addProduct}
+                        </Link>
+                      )}
+                      {Filter === "Filter" && (
+                        <a
+                          type="button"
+                          className="btn btn-outline-primary custom-toggle w-sm"
+                          onClick={handleShow}
+                        >
+                          <i className="ri-add-fill me-1 align-bottom"></i>
+                          Filter
+                        </a>
+                      )}
                     </div>
                   </div>
                   <div className="gridjs-wrapper" style={{ height: "auto" }}>
-                    <table
-                      role="grid"
-                      className="gridjs-table"
-                      style={{ height: "auto" }}
-                    >
-                      {response.length > 0 && (
-                        <thead className="gridjs-thead">
-                          <tr className="gridjs-tr">
-                            {Object.keys(response[0])?.map((item) => {
+                    {URL === "/enquiry/superAdminProductList" ? (
+                      <ProductList
+                        productListResponse={response}
+                        ProductDetailLink = {ProductDetailLink}
+                        columns={columns}
+                        AddProduct ={addProduct}
+                        Filter = {Filter}
+                      />
+                    ) :(URL === "/enquiry/superAdminCompanyList" ?
+                    <CompanyList  productListResponse={response}  ProductDetailLink = {ProductDetailLink} /> : (
+                      <table
+                        role="grid"
+                        className="gridjs-table"
+                        style={{ height: "auto" }}
+                      >
+                        {response.length > 0 && (
+                          <thead className="gridjs-thead">
+                            <tr
+                              className="gridjs-tr"
+                              style={{
+                                textAlign: "center",
+                                textTransform: "capitalize",
+                              }}
+                            >
                               <th
-                                key={item._id}
                                 data-column-id="id"
+                                className="gridjs-th gridjs-th-sort "
+                                tabindex={0}
+                                style={{ minWidth: "44px", width: "18px" }}
+                              >
+                                <div class="gridjs-th-content ">Sr No</div>
+
+                                <button
+                                  tabindex={-1}
+                                  aria-label="Sort column ascending"
+                                  title="Sort column ascending"
+                                  className="gridjs-sort gridjs-sort-neutral"
+                                ></button>
+                              </th>
+                              {columns?.map((item) => {
+                                <th
+                                  key={item._id}
+                                  data-column-id="id"
+                                  className="gridjs-th gridjs-th-sort"
+                                  tabIndex={0}
+                                  style={{ minWidth: "44px", width: "47px" }}
+                                >
+                                  <div className="gridjs-th-content">ID</div>
+                                  <button
+                                    tabIndex="-1"
+                                    aria-label="Sort column ascending"
+                                    title="Sort column ascending"
+                                    className="gridjs-sort gridjs-sort-neutral"
+                                  ></button>
+                                </th>;
+                                return (
+                                  <>
+                                    <th
+                                      data-column-id="id"
+                                      className="gridjs-th gridjs-th-sort fw-semibold teeh"
+                                      tabIndex={0}
+                                      style={{
+                                        minWidth: "44px",
+                                        width: "47px",
+                                      }}
+                                      key={item._id}
+                                    >
+                                      <div className="gridjs-th-content">
+                                        {!!item ? item : "---"}
+                                      </div>
+                                      <button
+                                        tabIndex={-1}
+                                        aria-label="Sort column ascending"
+                                        title="Sort column ascending"
+                                        className="gridjs-sort gridjs-sort-neutral"
+                                      ></button>
+                                    </th>
+                                  </>
+                                );
+                              })}
+
+                              <th
+                                data-column-id="actions"
                                 className="gridjs-th gridjs-th-sort"
                                 tabIndex="0"
-                                style={{ minWidth: "44px", width: "47px" }}
+                                style={{ width: "50px" }}
                               >
-                                <div className="gridjs-th-content">ID</div>
+                                <div className="gridjs-th-content">Actions</div>
                                 <button
                                   tabIndex="-1"
                                   aria-label="Sort column ascending"
                                   title="Sort column ascending"
                                   className="gridjs-sort gridjs-sort-neutral"
                                 ></button>
-                              </th>;
-                              return (
-                                <>
-                                  <th
-                                    data-column-id="id"
-                                    className="gridjs-th gridjs-th-sort"
-                                    tabIndex="0"
-                                    style={{ minWidth: "1000px", width: "150px" }}
-                                    key={item._id}
+                              </th>
+                              <th
+                                data-column-id="status"
+                                className="gridjs-th gridjs-th-sort"
+                                tabIndex="0"
+                                style={{ width: "50px" }}
+                              >
+                                <div className="gridjs-th-content">Status</div>
+                                <button
+                                  tabIndex="-1"
+                                  aria-label="Sort column ascending"
+                                  title="Sort column ascending"
+                                  className="gridjs-sort gridjs-sort-neutral"
+                                ></button>
+                              </th>
+                            </tr>
+                          </thead>
+                        )}
+
+                        <tbody className="gridjs-tbody">
+                          {search.map((item, i) => (
+                            <tr className="gridjs-tr " key={item._id}>
+                              <td
+                                data-column-id="id"
+                                className="gridjs-td tdee"
+                              >
+                                <span>
+                                  <span className="fw-medium">{`0${
+                                    i + 1
+                                  }`}</span>
+                                </span>
+                              </td>
+                              {/* { console.log("item===>", item)} */}
+                              {/* {Object.values(item).map((val, i) => { */}
+                              {columns.map((val, _i) => {
+                                {
+                                  console.log(
+                                    "item===>",
+
+                                    item[val]
+                                  );
+                                }
+
+                                return (
+                                  <td
+                                    data-column-id="product"
+                                    className="gridjs-td tdee"
                                   >
-                                    <div className="gridjs-th-content">
-                                      {item}
-                                    </div>
-                                    <button
-                                      tabIndex="-1"
-                                      aria-label="Sort column ascending"
-                                      title="Sort column ascending"
-                                      className="gridjs-sort gridjs-sort-neutral"
-                                    ></button>
-                                  </th>
-                                </>
-                              );
-                            })}
-                            {/* <th
-                              data-column-id="actions"
-                              className="gridjs-th gridjs-th-sort"
-                              tabIndex="0"
-                              style={{ width: "120px" }}
-                            >
-                              <div className="gridjs-th-content">Date</div>
-                              <button
-                                tabIndex="-1"
-                                aria-label="Sort column ascending"
-                                title="Sort column ascending"
-                                className="gridjs-sort gridjs-sort-neutral"
-                              ></button>
-                            </th> */}
-                            <th
-                              data-column-id="actions"
-                              className="gridjs-th gridjs-th-sort"
-                              tabIndex="0"
-                              style={{ width: "120px" }}
-                            >
-                              <div className="gridjs-th-content">Actions</div>
-                              <button
-                                tabIndex="-1"
-                                aria-label="Sort column ascending"
-                                title="Sort column ascending"
-                                className="gridjs-sort gridjs-sort-neutral"
-                              ></button>
-                            </th>
-                          </tr>
-                        </thead>
-                      )}
+                                    <span>
+                                      <Link
+                                        to={ProductDetailLink}
+                                        state={item._id}
+                                      >
+                                        {!!item[val] ? item[val] : "--"}
+                                      </Link>
+                                    </span>
+                                  </td>
+                                );
+                              })}
 
-                      <tbody className="gridjs-tbody">
-                        {search?.map((item) => (
-                           
-                          <tr className="gridjs-tr" key={item._id}>
-                            
-
-                            {Object.values(item).map((val) => {
-                              console.log("item===>",val)
-                              return (
+                              <td
+                                data-column-id="actions"
+                                className="gridjs-td"
+                              >
+                                {tag ? (
+                                  <Link
+                                    className="btn btn-sm btn-soft-info"
+                                    to={AddProductlink}
+                                    state={item._id}
+                                  >
+                                    {tag}
+                                  </Link>
+                                ) : (
+                                  <Link
+                                    className="btn btn-sm btn-soft-info"
+                                    // onClick={() => {
+                                    //   console.log("id--->",item._id,item,i)
+                                    //   onClick(item._id,item,i);
+                                    // }}
+                                    onClick={() => {
+                                      clickHandler(item._id, item, i);
+                                    }}
+                                  >
+                                    Approve
+                                  </Link>
+                                )}
+                                <button
+                                  className="btn btn-sm btn-soft-warning"
+                                  onClick={() => {
+                                    onDelete(item._id);
+                                  }}
+                                >
+                                  {tag_2}
+                                </button>
+                              </td>
+                              {/* <td data-column-id="status" className="gridjs-td">
+                              <button
+                                className="btn btn-sm btn-soft-info"
+                                onClick={() => {
+                                  onClick(item._id);
+                                }}
+                              >
+                               {tag}
+                              </button>
+                              <button className="btn btn-sm btn-soft-warning">
+                                Deny
+                              </button>
+                            </td> */}
+                              {item.status  && (
                                 <td
-                                  data-column-id="product"
+                                  data-column-id="status"
                                   className="gridjs-td"
                                 >
-                                  <span>
-                                    <Link
-                                      to={ProductDetailLink}
-                                      state={item._id}
-                                    >
-                                      {val}
-                                    </Link>
+                                  <span className={`${item.status==="Pending" ? "badge btn-soft-warning text-uppercase": "badge btn-soft-success text-uppercase"}`}>
+                                    {item.status}
                                   </span>
                                 </td>
-                              );
-                            })}
-                             {
-                               title ==="Product List" ?( <td data-column-id="actions" className="gridjs-td">
-                                 <Link  to={ProductDetailLink}  state={item._id}>
-              
-              <button className="btn btn-sm btn-soft-primary btnml">
-              <FaRegEye fontSize="1.2rem" title="View" />
-              </button>
-              </Link>
-                               <Link to={`/superAdminEditProduct/${item._id}`} state={{id:`${item._id}`}}>
-                               <button
-                                 className="btn btn-sm btn-soft-warning btnml" 
-                             
-                               >
-                               <BiEdit fontSize="1.2rem" title="Edit"/>
-                               </button>
-                               </Link>
-                               <button className="btn btn-sm btn-soft-danger" onClick={() => deletePost(item._id)}>
-                               <MdDeleteOutline fontSize="1.2rem" title="Delete" />
-                               </button>
-                              
-                             </td>):( <td data-column-id="actions" className="gridjs-td">
-                               <button
-                                 className="btn btn-sm btn-soft-info"
-                                 onClick={() => {
-                                   onClick(item._id);
-                                 }}
-                               >
-                                 Approve Now
-                               </button>
-                               <button className="btn btn-sm btn-soft-warning">
-                                 Deny
-                               </button>
-                             </td>) 
-                            }
-                            
-                           
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                              )}
+                              {updatedStatus === "Pending" && (
+                                <td
+                                  data-column-id="status"
+                                  className="gridjs-td"
+                                >
+                                  <span className="badge badge-soft-warning text-uppercase">
+                                    {updatedStatus || "Status"}
+                                  </span>
+                                </td>
+                              )}
+                              {latestStatus ? (
+                                <td
+                                  data-column-id="status"
+                                  className="gridjs-td"
+                                >
+                                  <span className="badge badge-soft-warning text-uppercase">
+                                    Status{" "}
+                                  </span>
+                                </td>
+                              ) : (
+                                ""
+                              )}
+
+                              {/* {isStatus === "pending" &&  search.map(()=>{})(
+                              <td data-column-id="status" className="gridjs-td">
+                                <span className="badge badge-soft-warning text-uppercase">
+                                  Pending
+                                </span>
+                              </td>
+                            )} */}
+                              {/* {isStatus !== "pending" && (
+                              <td data-column-id="status" className="gridjs-td">
+                                <span className="badge badge-soft-warning text-uppercase">
+                                  Status
+                                </span>
+                              </td>
+                            )} */}
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -325,7 +482,12 @@ const SideBar = ({
 
         {/*end modal*/}
       </div>
-      <ToastContainer />
+      <FilterButton
+        hideShow={hideShow}
+        title="Filter"
+        show={show}
+        productResponse={search}
+      />
     </>
   );
 };

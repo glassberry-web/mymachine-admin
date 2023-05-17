@@ -98,18 +98,18 @@ function Editproduct() {
   }
 
   // convert object url to images
-  useEffect(() => {
-    if (!image) {
-        setPreview(undefined)
-        return
-    }
+//   useEffect(() => {
+//     if (!image) {
+//         setPreview(undefined)
+//         return
+//     }
 
-    const objectUrl = URL.createObjectURL(image)
-    setPreview(objectUrl)
+//     const objectUrl = URL.createObjectURL(image)
+//     setPreview(objectUrl)
 
-    // free memory when ever this component is unmounted
-    return () => URL.revokeObjectURL(objectUrl)
-}, [image])
+
+//     return () => URL.revokeObjectURL(objectUrl)
+// }, [image])
 
   const {
     register,
@@ -122,7 +122,8 @@ function Editproduct() {
    
     if (event.target && event.target.files[0]) {
       setImage(event.target.files[0]);
-      setFormdata({ ...newformdata, image:image});
+      setFormdata({ ...newformdata, image:image[0]});
+      console.log("fffff=>", newformdata);
       // const reader = new FileReader();
 
       // reader.onloadend = () => {
@@ -255,7 +256,7 @@ function Editproduct() {
             noValidate
             action="/image"
             encType="multipart/form-data"
-            method="PATCH"
+            method="POST"
           >
             <div className="row">
               <div className="col-lg-8">
@@ -361,13 +362,11 @@ function Editproduct() {
                               className="form-control d-none"
                               id="product-image-input"
                               type="file"
-                              // value={newformdata.image}  
+                              // value={image || ""}  
                               name="image"
                               accept=".png, .jpg, .jpeg"
                               onChange={imageHandler}
-                              // {...register("image", {
-                              //   required: true,
-                              // })}
+                              
                             />
                             {/* {errors.name?.type === "required" && (
                           <p role="alert" id="error">
@@ -378,7 +377,7 @@ function Editproduct() {
                           <div className="avatar-lg avtlg">
                             <div className="avatar-title bg-light bgavt rounded">
                               <img
-                                src={preview}
+                                src={newformdata.image|| preview}
                                 // onChange={imageHandler}                    
                                 id="product-img"
                                 className="avatar-md avtwid h-auto"
@@ -526,6 +525,7 @@ function Editproduct() {
                               </label>
                               <input
                                 type="text"
+                                name="brand" 
                                 className="form-control"
                                 value={newformdata.brand} 
                                 onChange={handleChange}                                 

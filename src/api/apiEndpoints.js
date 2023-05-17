@@ -47,3 +47,17 @@ export const latestProduct = "/enquiry/latestProduct";
 //for superAdmin_addCompany
 export const AdminSignUp = "/enquiry/addVendor";
 export const AdminLogIn = "/enquiry/addCompany_Sign_up";
+
+// for Add Company details
+
+export const ADD_COMPANY_DETAILS="/enquiry/addCompanyDetail"
+export const COMPANY_SIGNIN_MAIL="/enquiry/signInMail"
+
+//for success status
+export const SUCCESS_STATUS="/enquiry/successfulStatus"
+
+
+export const ADD_COMPANY_DETAILS_VENDOR="/enquiry/addCompanyDetailVendor"
+
+//for filter
+export const FILTER="/enquiry/filter"

@@ -7,10 +7,13 @@ function AddVendor() {
   return (
     <div className="page-content">
       <SideBar
+       _id={_id}
         title="Vendors"
         AddProductlink="/AddCompany"
+        // Filter="Filter"
+        addProduct="Addcompany"
         URL={`/enquiry/superAdminCompanyList`}
-        ProductDetailLink="/companyDetailPage"
+        ProductDetailLink="/companyEditPage"
       />
     </div>
   );

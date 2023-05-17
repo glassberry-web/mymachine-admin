@@ -25,12 +25,15 @@ import AddCompany from "../components/company/AddCompany";
 import AddVendor from "../pages/AddCompany";
 import CompanyDetail from "../components/company/CompanyDetail";
 import Editproduct from "../components/product/EditProduct";
+import ThankYou from "../pages/ThankYou";
+import Filter from "../utils/FilterForm";
 
 function AllRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/enquiryForm" element={<EnquiryMail />} />
+      <Route path="/thankYou" element={<ThankYou />} />
       <Route path="/mail" element={<VendorPage />} />
 
       <Route path="/vendorAuth" element={<VendorAuth />} />
@@ -52,7 +55,8 @@ function AllRoutes() {
         <Route path="/Productlist" element={<ProductList />} />
         <Route path="/AddCompany" element={<AddCompany />} />
         <Route path="/ProductDetail" element={<ProductDetail />} />
-        <Route path="/companyDetailPage" element={<CompanyDetail />} />
+        <Route path="/companyEditPage" element={<CompanyDetail />} />
+        <Route path="/productFilter" element={<Filter />} />
         {/* <Route path="/AddProduct" element={<Addproduct />} /> */}
         {/* <Route path="/ProductDetail" element={<ProductDetail />} /> */}
         <Route path="*" element={<NoMatch />} />

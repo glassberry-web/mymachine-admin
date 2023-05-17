@@ -1,11 +1,11 @@
 import React from "react";
 import SideBar from "../utils/SideBar";
-// import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 function AddProduct() {
-  // const [searchParam] = useSearchParams();
-  // console.log("searchParam===>", searchParam);
+  const [searchParam] = useSearchParams();
+  console.log("searchParam===>", searchParam);
   // console.log("vendorId===>",searchParam.get("vendorId"))
-  const { _id } = JSON.parse(localStorage.getItem("vendor"));
+  const { _id } = JSON.parse(localStorage.getItem("superAdminvendorid")) || "";
 
   return (
     <div className="page-content">
@@ -13,6 +13,8 @@ function AddProduct() {
         title="Product List"
         URL={`/enquiry/productList`}
         _id={_id}
+        Filter="Filter"
+        addProduct="Addproduct"
         AddProductlink="/AddProduct"
         ProductDetailLink="/ProductDetail"
         searchItem={"product_name"}

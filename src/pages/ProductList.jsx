@@ -45,7 +45,7 @@ const ProductList = () => {
   return (
     <>
       <div className="page-content">
-        <SideBar title="Product List" URL={superAdminProductList}  AddProductlink="/superAdminAddProduct"  _id={ superAdminID}  ProductDetailLink="/ProductDetail"/>
+        <SideBar title="Product List" URL={superAdminProductList}  AddProductlink="/superAdminAddProduct" addProduct="AddProduct"  _id={ superAdminID}  ProductDetailLink="/ProductDetail" Filter="Filter"/>
       </div>
 
       {/* <div className="page-content">
