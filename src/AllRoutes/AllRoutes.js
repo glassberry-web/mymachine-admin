@@ -31,7 +31,7 @@ import Filter from "../utils/FilterForm";
 function AllRoutes() {
   return (
     <Routes>
-      <Route path="/admin" element={<Login />} />
+      <Route path="/" element={<Login />} />
       <Route path="/enquiryForm" element={<EnquiryMail />} />
       <Route path="/thankYou" element={<ThankYou />} />
       <Route path="/mail" element={<VendorPage />} />
