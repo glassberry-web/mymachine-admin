@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 
@@ -10,60 +10,26 @@ import { useNavigate } from "react-router-dom";
 import FullPageLoader from "../FullPageLoader";
 
 
-function CompanyList({ productListResponse,  ProductDetailLink,}) {
-    const [loading, setLoading] = useState(false);
-    const [sortedData, setSortedData] = useState(productListResponse);
-    const [sortOrder, setSortOrder] = useState('asc');
+function LatestProduct({ productListResponse,  ProductDetailLink,}) {
+    const [loading, setLoading] = useState(false)
     console.log("productListResponse--->",  ProductDetailLink );
     const navigate = useNavigate();
-
-    useEffect(() => {
-        toggleSortOrder();
-    }, [productListResponse]);
-  
-    //* Function to toggle the sort order start
-    const toggleSortOrder = () => {
-        const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-        const sortedArray = [...productListResponse].sort((a, b) => {
-            if (newSortOrder === 'asc') {
-                console.log('Sorting ASC:', a.city, b.city);
-                if (a.status === b.status) {
-                  return a.company_name.localeCompare(b.company_name) || a.city.localeCompare(b.city);
-                } else {
-                  return a.status === 'active' ? -1 : 1;
-                }
-              } else {
-                console.log('Sorting DESC:', a.city, b.city);
-                if (a.status === b.status) {
-                  return b.company_name.localeCompare(a.company_name) || b.city.localeCompare(a.city);
-                } else {
-                  return b.status === 'active' ? 1 : -1;
-                }
-              }
-              
-        });
-       
-        
-        setSortedData(sortedArray);
-        setSortOrder(newSortOrder);
-    };
-    //* Function to toggle the sort order end
      // **delete start //
-  const deletePost = async(id) => {
+  const deletePost = async(id, name) => {
     setLoading(true);  
-    const confirmDelete = window.confirm("Are you sure you want to delete this product?");
+    const confirmDelete = window.confirm(`Are you sure you want to delete this ${name} product?`);
     console.log(id);
     try{
     if(confirmDelete){
   const deletedData =  
-   await axios.delete(`/enquiry/deleteCompany/${id}`, {
+   await axios.delete(`/enquiry/deleteProduct/${id}`, {
       headers: { "Content-Type": "multipart/form-data" }
     });
     
     console.log(deletedData)
     if (deletedData.status === 200) {
    
-      toast.success("Company Deleted Successfully !", {
+      toast.success(`<strong>${name}<<strong> Deleted Successfully!`, {
         position: toast.POSITION.TOP_RIGHT,
       });
       // navigate("/vendorAdminPanel");
@@ -76,7 +42,7 @@ function CompanyList({ productListResponse,  ProductDetailLink,}) {
     // .catch((err) => console.log(err));
    
   
-  // navigate("/sidebarDashboards")
+//   navigate("/sidebarDashboards")
   }
 }catch (error) {
   setLoading(false);  
@@ -119,10 +85,11 @@ function CompanyList({ productListResponse,  ProductDetailLink,}) {
                         tabIndex={0}
                         style={{ width: "300px" }}
                     >
-                        <div className="gridjs-th-content">Company_Name</div>
+                        <div className="gridjs-th-content">Product</div>
                         <button
                             tabIndex={-1}
-                            onClick={toggleSortOrder} 
+                            aria-label="Sort column ascending"
+                            title="Sort column ascending"
                             className="gridjs-sort gridjs-sort-neutral"
                         />
                     </th>
@@ -130,15 +97,15 @@ function CompanyList({ productListResponse,  ProductDetailLink,}) {
                         data-column-id="stock"
                         className="gridjs-th gridjs-th-sort text-muted"
                         tabIndex={0}
-                        style={{ width: "150px" }}
+                        style={{ width: "100px" }}
                     >
-                        <div className="gridjs-th-content">Email_id</div>
-                        {/* <button
+                        <div className="gridjs-th-content">Brand</div>
+                        <button
                             tabIndex={-1}
                             aria-label="Sort column ascending"
                             title="Sort column ascending"
                             className="gridjs-sort gridjs-sort-neutral"
-                        /> */}
+                        />
                     </th>
                     {/* <th
             data-column-id="stock"
@@ -158,38 +125,29 @@ function CompanyList({ productListResponse,  ProductDetailLink,}) {
                         data-column-id="price"
                         className="gridjs-th gridjs-th-sort text-muted"
                         tabIndex={0}
-                        style={{ width: "150px" }}
+                        style={{ width: "200px" }}
                     >
-                        <div className="gridjs-th-content">Manager_Name</div>
-                        {/* <button
+                        <div className="gridjs-th-content">Sub-Category</div>
+                        <button
                             tabIndex={-1}
                             aria-label="Sort column ascending"
                             title="Sort column ascending"
                             className="gridjs-sort gridjs-sort-neutral"
-                        /> */}
+                        />
                     </th>
                     <th
                         data-column-id="price"
                         className="gridjs-th gridjs-th-sort text-muted"
                         tabIndex={0}
-                        style={{ width: "150px" }}
+                        style={{ width: "160px" }}
                     >
-                        <div className="gridjs-th-content">Phone_Number</div>
-                        {/* <button
+                        <div className="gridjs-th-content">Modal Name</div>
+                        <button
                             tabIndex={-1}
                             aria-label="Sort column ascending"
                             title="Sort column ascending"
                             className="gridjs-sort gridjs-sort-neutral"
-                        /> */}
-                    </th>
-                    <th
-                        data-column-id="price"
-                        className="gridjs-th gridjs-th-sort text-muted"
-                        tabIndex={0}
-                        style={{ width: "120px" }}
-                    >
-                        <div className="gridjs-th-content">Location</div>
-                        
+                        />
                     </th>
 
                     <th
@@ -198,18 +156,6 @@ function CompanyList({ productListResponse,  ProductDetailLink,}) {
                         style={{ width: "100px" }}
                     >
                         <div className="gridjs-th-content">Actions</div>
-                    </th>
-                    <th
-                        data-column-id="action"
-                        className="gridjs-th text-muted"
-                        style={{ width: "100px" }}
-                    >
-                        <div className="gridjs-th-content">Status</div>
-                        <button
-                            tabIndex={-1}
-                            onClick={toggleSortOrder} 
-                            className="gridjs-sort gridjs-sort-neutral"
-                        />
                     </th>
                     {/* <th
             data-column-id="action"
@@ -221,10 +167,10 @@ function CompanyList({ productListResponse,  ProductDetailLink,}) {
                 </tr>
             </thead>
             <tbody className="gridjs-tbody">
-                {sortedData?.map((company, i) => {
+                {productListResponse?.map((product, i) => {
                     return (
                         <>
-                            <tr className="gridjs-tr" key={company._id}>
+                            <tr className="gridjs-tr" key={product._id}>
                                 <td
                                     data-column-id="id"
                                     className="gridjs-td tdee"
@@ -257,43 +203,40 @@ function CompanyList({ productListResponse,  ProductDetailLink,}) {
                                             <div className="flex-shrink-0 me-3">
                                                 <div className="avatar-sm bg-light rounded p-1">
                                                     <img
-                                                        src={company.logo || ""}
-                                                        alt={company.company_name}
-                                                        className="img-fluid d-block imgob"
+                                                        src={product.image || ""}
+                                                        alt=""
+                                                        className="img-fluid d-block"
                                                     />
                                                 </div>
                                             </div>
                                             <div className="flex-grow-1">
                                                 <h5 className="fs-14 mb-1">
-                                                    <Link  to={ProductDetailLink}  state={company._id}
+                                                    <Link  to={ProductDetailLink}  state={product._id}
                                                         href="apps-ecommerce-product-details.html"
                                                         className="text-dark"
                                                     >
-                                                        {company.company_name}
+                                                        {product.product_name}
                                                     </Link>
                                                 </h5>
                                                 <p className="text-muted mb-0">
-                                                    CEO :{" "}
-                                                    <span className="fw-medium">{company.ownerName}</span>
+                                                    Category :{" "}
+                                                    <span className="fw-medium">{product.category}</span>
                                                 </p>
                                             </div>
                                         </div>
                                     </span>
                                 </td>
                                 <td data-column-id="stock" className="gridjs-td">
-                                    {company.emailId}
+                                    {product.brand}
                                 </td>
                                 {/* <td data-column-id="stock" className="gridjs-td">
                   {product.brand}
                 </td> */}
                                 <td data-column-id="price" className="gridjs-td">
-                                    <span>{company.managerName || "--"}</span>
+                                    <span>{product.subCategory || "--"}</span>
                                 </td>
                                 <td data-column-id="price" className="gridjs-td">
-                                    <span>{company.phoneNo || "--"}</span>
-                                </td>
-                                <td data-column-id="price" className="gridjs-td">
-                                    <span>{(company.city || "--")}</span>
+                                    <span>{product.modalNum || "--"}</span>
                                 </td>
                                 <td data-column-id="action" className="gridjs-td">
                                     <span>
@@ -308,8 +251,7 @@ function CompanyList({ productListResponse,  ProductDetailLink,}) {
                                             </button>
                                             <ul className="dropdown-menu dropdown-menu-end">
                                                 <li>
-                                                    <Link 
-                                                    //  to={ProductDetailLink}  state={company._id}
+                                                    <Link to={ProductDetailLink}  state={product._id}
                                                         className="dropdown-item"
                                                         href="apps-ecommerce-product-details.html"
                                                     >
@@ -318,7 +260,7 @@ function CompanyList({ productListResponse,  ProductDetailLink,}) {
                                                     </Link>
                                                 </li>
                                                 <li>
-                                                    <Link to={ProductDetailLink} state={company._id}
+                                                    <Link to={`/superAdminEditProduct/${product._id}`} state={{id:`${product._id}`, namee:`${product.product_name}`}}
                                                         className="dropdown-item edit-list"
                                                         data-edit-id={1}
                                                         href="apps-ecommerce-add-product.html"
@@ -331,7 +273,7 @@ function CompanyList({ productListResponse,  ProductDetailLink,}) {
                                                 <li className="dropdown-divider" />
                                                 <li>
                                                     <Link
-                                                    onClick={() => deletePost(company._id)}
+                                                    onClick={() => deletePost(product._id, product.product_name)}
                                                         className="dropdown-item remove-list"
                                                         href="#"
                                                         data-id={1}
@@ -345,9 +287,6 @@ function CompanyList({ productListResponse,  ProductDetailLink,}) {
                                             </ul>
                                         </div>
                                     </span>
-                                </td>
-                                <td data-column-id="price" className="gridjs-td">
-                                    <span className={`${company.status ? "btn-soft-success" :"btn-soft-warning"}`}>{company.status || "Deactive"}</span>
                                 </td>
                                 {/* <td data-column-id="action" className="gridjs-td">
                   <span>
@@ -397,4 +336,4 @@ function CompanyList({ productListResponse,  ProductDetailLink,}) {
     );
 }
 
-export default CompanyList;
+export default LatestProduct;

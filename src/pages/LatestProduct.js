@@ -5,7 +5,7 @@ import SideBar from "../utils/SideBar";
 
 function LatestProduct() {
   // return <GridTable title="Latest Products" />;
-  return <SideBar title="Latest Products" URL={latestProduct} />;
+  return <SideBar title="Latest Products"  ProductDetailLink="/ProductDetail" URL={latestProduct} />;
 }
 
 export default LatestProduct;

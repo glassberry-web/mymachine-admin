@@ -14452,4 +14452,27 @@ padding-bottom: 50px;
 .btnml{
     margin-right: 0.5rem;
 }
+.swal2-title-custom {
+    font-size: 1rem !important;
+    color: #656464 !important;
+  }
+  table>tbody>tr:nth-of-type(odd)>*{
+    background-color: #dcdcdc;
+}
+/* table>tbody>tr:nth-of-type(odd)>*:hover{
+    background-color: #fcbe00;
+} */
+table>tbody>tr:nth-of-type(even)>*{
+    background-color: white;
+}
+.imgob{
+    object-fit: contain;
+    aspect-ratio: 3/3;
+}
+th.gridjs-th .gridjs-th-content{
+    display: contents !important;
+}
+th.gridjs-th{
+    padding: 1rem !important;
+}
 

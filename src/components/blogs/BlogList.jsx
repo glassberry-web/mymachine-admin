@@ -10,45 +10,45 @@ import { useNavigate } from "react-router-dom";
 import FullPageLoader from "../FullPageLoader";
 
 
-function ProductList({ productListResponse, ProductDetailLink, }) {
+function BlogList({ productListResponse}) {
     const [loading, setLoading] = useState(false)   
     const [sortedData, setSortedData] = useState(productListResponse);
     console.log("productListResponse--->", productListResponse);
     const navigate = useNavigate();
     const [sortOrder, setSortOrder] = useState('asc');
-    useEffect(() => {
-        toggleSortOrder();
-    }, [productListResponse]);
+    // useEffect(() => {
+    //     toggleSortOrder();
+    // }, [productListResponse]);
 
     //* Function to toggle the sort order start
-    const toggleSortOrder = () => {
-        const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
-        const sortedArray = [...productListResponse].sort((a, b) => {
-            if (newSortOrder === 'asc') {
-                if (a.product_name !== b.product_name) {
-                    return a.product_name.localeCompare(b.product_name);
-                } else if (a.brand !== b.brand) {
-                    return a.brand.localeCompare(b.brand);
-                } else if (a.subCategory !== b.subCategory) {
-                    return a.subCategory.localeCompare(b.subCategory);
-                } else {
-                    return a.modalnum.localeCompare(b.modalnum);
-                }
-            } else {
-                if (a.product_name !== b.product_name) {
-                    return b.product_name.localeCompare(a.product_name);
-                } else if (a.brand !== b.brand) {
-                    return b.brand.localeCompare(a.brand);
-                } else if (a.subCategory !== b.subCategory) {
-                    return b.subCategory.localeCompare(a.subCategory);
-                } else {
-                    return b.modalNum.localeCompare(a.modalNum);
-                }
-            }
-        });
-        setSortedData(sortedArray);
-        setSortOrder(newSortOrder);
-    };
+    // const toggleSortOrder = () => {
+    //     const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    //     const sortedArray = [...productListResponse].sort((a, b) => {
+    //         if (newSortOrder === 'asc') {
+    //             if (a.product_name !== b.product_name) {
+    //                 return a.product_name.localeCompare(b.product_name);
+    //             } else if (a.brand !== b.brand) {
+    //                 return a.brand.localeCompare(b.brand);
+    //             } else if (a.subCategory !== b.subCategory) {
+    //                 return a.subCategory.localeCompare(b.subCategory);
+    //             } else {
+    //                 return a.modalnum.localeCompare(b.modalnum);
+    //             }
+    //         } else {
+    //             if (a.product_name !== b.product_name) {
+    //                 return b.product_name.localeCompare(a.product_name);
+    //             } else if (a.brand !== b.brand) {
+    //                 return b.brand.localeCompare(a.brand);
+    //             } else if (a.subCategory !== b.subCategory) {
+    //                 return b.subCategory.localeCompare(a.subCategory);
+    //             } else {
+    //                 return b.modalNum.localeCompare(a.modalNum);
+    //             }
+    //         }
+    //     });
+    //     setSortedData(sortedArray);
+    //     setSortOrder(newSortOrder);
+    // };
     //* Function to toggle the sort order end
 
 
@@ -60,7 +60,7 @@ function ProductList({ productListResponse, ProductDetailLink, }) {
         try {
             if (confirmDelete) {
                 const deletedData =
-                    await axios.delete(`/enquiry/deleteProduct/${id}`, {
+                    await axios.delete(`/enquiry/deleteBlog/${id}`, {
                         headers: { "Content-Type": "multipart/form-data" }
                     });
 
@@ -111,11 +111,11 @@ function ProductList({ productListResponse, ProductDetailLink, }) {
                             tabIndex={0}
                             style={{ width: "300px" }}
                         >
-                            <div className="gridjs-th-content">Product</div>
-                            <button                               
+                            <div className="gridjs-th-content">Blog_title</div>
+                            {/* <button                               
                                 onClick={toggleSortOrder}                                
                                 className="gridjs-sort gridjs-sort-neutral"
-                            />
+                            /> */}
                         </th>
                         <th
                             data-column-id="stock"
@@ -123,12 +123,12 @@ function ProductList({ productListResponse, ProductDetailLink, }) {
                             tabIndex={0}
                             style={{ width: "100px" }}
                         >
-                            <div className="gridjs-th-content">Brand</div>
-                            <button
+                            <div className="gridjs-th-content">Publish_date</div>
+                            {/* <button
                                 tabIndex={-1}
                                 onClick={toggleSortOrder}                               
                                 className="gridjs-sort gridjs-sort-neutral"
-                            />
+                            /> */}
                         </th>                       
                         <th
                             data-column-id="price"
@@ -136,12 +136,12 @@ function ProductList({ productListResponse, ProductDetailLink, }) {
                             tabIndex={0}
                             style={{ width: "200px" }}
                         >
-                            <div className="gridjs-th-content">Sub-Category</div>
-                            <button
+                            <div className="gridjs-th-content">Publish_by</div>
+                            {/* <button
                                 tabIndex={-1}
                                 onClick={toggleSortOrder}                               
                                 className="gridjs-sort gridjs-sort-neutral"
-                            />
+                            /> */}
                         </th>
                         <th
                             data-column-id="price"
@@ -149,12 +149,12 @@ function ProductList({ productListResponse, ProductDetailLink, }) {
                             tabIndex={0}
                             style={{ width: "160px" }}
                         >
-                            <div className="gridjs-th-content">Modal Name</div>
-                            <button
+                            <div className="gridjs-th-content">Meta_title</div>
+                            {/* <button
                                 tabIndex={-1}
                                 onClick={toggleSortOrder}                                
                                 className="gridjs-sort gridjs-sort-neutral"
-                            />
+                            /> */}
                         </th>
 
                         <th
@@ -167,10 +167,10 @@ function ProductList({ productListResponse, ProductDetailLink, }) {
                     </tr>
                 </thead>
                 <tbody className="gridjs-tbody">
-                    {sortedData && (sortedData.map((product, i) => {
+                    {productListResponse && (productListResponse.map((blog, i) => {
                         return (
                             <>
-                                <tr className="gridjs-tr" key={product._id}>
+                                <tr className="gridjs-tr" key={blog._id}>
                                     <td
                                         data-column-id="id"
                                         className="gridjs-td tdee"
@@ -202,40 +202,40 @@ function ProductList({ productListResponse, ProductDetailLink, }) {
                                                 <div className="flex-shrink-0 me-3">
                                                     <div className="avatar-sm bg-light rounded p-1">
                                                         <img
-                                                            src={product.image || ""}
-                                                            alt=""
+                                                            src={blog.blog_image || ""}
+                                                            alt={blog.blog_name}
                                                             className="img-fluid d-block imgob"
                                                         />
                                                     </div>
                                                 </div>
                                                 <div className="flex-grow-1">
                                                     <h5 className="fs-14 mb-1">
-                                                        <Link to={ProductDetailLink} state={product._id}
+                                                        <Link to="#" state={blog._id}
                                                             href="apps-ecommerce-product-details.html"
                                                             className="text-dark"
                                                         >
-                                                            {product.product_name}
+                                                            {blog.blog_name}
                                                         </Link>
                                                     </h5>
-                                                    <p className="text-muted mb-0">
+                                                    {/* <p className="text-muted mb-0">
                                                         Category :{" "}
                                                         <span className="fw-medium">{product.category}</span>
-                                                    </p>
+                                                    </p> */}
                                                 </div>
                                             </div>
                                         </span>
                                     </td>
                                     <td data-column-id="stock" className="gridjs-td">
-                                        {product.brand}
+                                        {blog.Publish_Date.slice(0,10).split("-").reverse().join("-") }
                                     </td>
                                     {/* <td data-column-id="stock" className="gridjs-td">
                   {product.brand}
                 </td> */}
                                     <td data-column-id="price" className="gridjs-td">
-                                        <span>{product.subCategory || "--"}</span>
+                                        <span>{blog.Publish_By || "--"}</span>
                                     </td>
                                     <td data-column-id="price" className="gridjs-td">
-                                        <span>{product.modalNum || "--"}</span>
+                                        <span>{blog.MetaTitle || "--"}</span>
                                     </td>
                                     <td data-column-id="action" className="gridjs-td">
                                         <span>
@@ -250,7 +250,7 @@ function ProductList({ productListResponse, ProductDetailLink, }) {
                                                 </button>
                                                 <ul className="dropdown-menu dropdown-menu-end">
                                                     <li>
-                                                        <Link to={ProductDetailLink} state={product._id}
+                                                        <Link to="" state={blog._id}
                                                             className="dropdown-item"
                                                             href="apps-ecommerce-product-details.html"
                                                         >
@@ -259,7 +259,7 @@ function ProductList({ productListResponse, ProductDetailLink, }) {
                                                         </Link>
                                                     </li>
                                                     <li>
-                                                        <Link to={`/superAdminEditProduct/${product._id}`} state={{ id: `${product._id}`, namee: `${product.product_name}` }}
+                                                        <Link to={`/editBlog/${blog.blog_name}`} state={{ id: `${blog._id}`, namee: `${blog.blog_name}` }}
                                                             className="dropdown-item edit-list"
                                                             data-edit-id={1}
                                                             href="apps-ecommerce-add-product.html"
@@ -272,7 +272,7 @@ function ProductList({ productListResponse, ProductDetailLink, }) {
                                                     <li className="dropdown-divider" />
                                                     <li>
                                                         <Link
-                                                            onClick={() => deletePost(product._id, product.product_name)}
+                                                            onClick={() => deletePost(blog._id, blog.blog_name)}
                                                             className="dropdown-item remove-list"
                                                             href="#"
                                                             data-id={1}
@@ -498,4 +498,4 @@ function ProductList({ productListResponse, ProductDetailLink, }) {
     );
 }
 
-export default ProductList;
+export default BlogList;

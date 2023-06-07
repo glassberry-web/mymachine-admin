@@ -22,7 +22,7 @@ const EnquiryList = () => {
   // useEffect(() => {
   //   enquiryDetail();
   // }, []);
-  const formUrl = "http://localhost:3001/mail";
+  const formUrl = "http://15.207.31.23:3001/mail";
   const statusHandler = async (id) => {
     localStorage.setItem("Approve", id);
 

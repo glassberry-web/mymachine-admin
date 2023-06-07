@@ -6,8 +6,13 @@ import { useDispatch } from "react-redux/es/exports";
 
 import ProductList from "../components/product/ProductList";
 import CompanyList from "../components/company/CompanyList";
+import TradeEnquiryList from "../components/enquiry/TradeEnquiryList";
 import FilterButton from "./FilterButton";
 import { responseDataActions } from "../reducers/filter/FilterSlice";
+import UserEnquiryList from "../components/enquiry/UserEnquiryList";
+import BlogList from "../components/blogs/BlogList";
+import SliderList from "../components/slider/SlderList";
+import ApplicationList from "../components/applications/ApplicationList";
 const SideBar = ({
   title,
   onClick,
@@ -59,7 +64,9 @@ const SideBar = ({
         // seting columns for the data table
         let col = res?.data?.result ? Object.keys(res?.data?.result[0]) : [];
         console.log("col===>", col);
-        setColumns(col);
+       const colslice = col.slice(1);
+        setColumns(colslice);
+       
 
         setSearch(res?.data?.result);
         setTotalPage(res?.data?.totalPages);
@@ -181,10 +188,21 @@ const SideBar = ({
                         Filter = {Filter}
                       />
                     ) :(URL === "/enquiry/superAdminCompanyList" ?
-                    <CompanyList  productListResponse={response}  ProductDetailLink = {ProductDetailLink} /> : (
+                    <CompanyList  productListResponse={response}  ProductDetailLink = {ProductDetailLink} />
+                     :(URL === "/enquiry/getEnquiry" ? (
+                     <TradeEnquiryList productListResponse={response} updatedStatus={updatedStatus} latestStatus={latestStatus} statusHandler={statusHandler} onClick={onClick}/>) :
+                     (URL === "/enquiry/getUserEnquiry" ? (
+                     <UserEnquiryList productListResponse={response} /> ):
+                     (URL === "/enquiry/superAdminBlogList" ? 
+                     (<BlogList productListResponse={response} />):
+                     (URL === "/enquiry/superAdminSliderList" ? 
+                     (<SliderList productListResponse={response} />):
+                     (URL === "/enquiry/superAdminApplicationList" ? 
+                     (<ApplicationList productListResponse={response} />):
+                      (
                       <table
                         role="grid"
-                        className="gridjs-table"
+                        className="gridjs-table table table-striped"
                         style={{ height: "auto" }}
                       >
                         {response.length > 0 && (
@@ -253,7 +271,7 @@ const SideBar = ({
                                 );
                               })}
 
-                              <th
+                              {/* <th
                                 data-column-id="actions"
                                 className="gridjs-th gridjs-th-sort"
                                 tabIndex="0"
@@ -266,8 +284,8 @@ const SideBar = ({
                                   title="Sort column ascending"
                                   className="gridjs-sort gridjs-sort-neutral"
                                 ></button>
-                              </th>
-                              <th
+                              </th> */}
+                              {/* <th
                                 data-column-id="status"
                                 className="gridjs-th gridjs-th-sort"
                                 tabIndex="0"
@@ -280,7 +298,7 @@ const SideBar = ({
                                   title="Sort column ascending"
                                   className="gridjs-sort gridjs-sort-neutral"
                                 ></button>
-                              </th>
+                              </th> */}
                             </tr>
                           </thead>
                         )}
@@ -303,7 +321,7 @@ const SideBar = ({
                               {columns.map((val, _i) => {
                                 {
                                   console.log(
-                                    "item===>",
+                                    "item23===>",
 
                                     item[val]
                                   );
@@ -326,7 +344,7 @@ const SideBar = ({
                                 );
                               })}
 
-                              <td
+                              {/* <td
                                 data-column-id="actions"
                                 className="gridjs-td"
                               >
@@ -360,7 +378,7 @@ const SideBar = ({
                                 >
                                   {tag_2}
                                 </button>
-                              </td>
+                              </td> */}
                               {/* <td data-column-id="status" className="gridjs-td">
                               <button
                                 className="btn btn-sm btn-soft-info"
@@ -374,7 +392,7 @@ const SideBar = ({
                                 Deny
                               </button>
                             </td> */}
-                              {item.status  && (
+                              {/* {item.status  && (
                                 <td
                                   data-column-id="status"
                                   className="gridjs-td"
@@ -405,7 +423,7 @@ const SideBar = ({
                                 </td>
                               ) : (
                                 ""
-                              )}
+                              )} */}
 
                               {/* {isStatus === "pending" &&  search.map(()=>{})(
                               <td data-column-id="status" className="gridjs-td">
@@ -425,7 +443,7 @@ const SideBar = ({
                           ))}
                         </tbody>
                       </table>
-                    ))}
+                    )))))))}
                   </div>
                 </div>
               </div>

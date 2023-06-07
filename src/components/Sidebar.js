@@ -105,7 +105,7 @@ const Sidebar = ({ onToggle, toggle }) => {
                           aria-expanded={`${data.submenu ? true : false}`}
                           aria-controls={data.href}
                         >
-                          {data.icon}
+                          <span>{data.icon}</span>
                           <span
                             style={{ display: toggle ? "none" : "block" }}
                             data-key={data.datakey}

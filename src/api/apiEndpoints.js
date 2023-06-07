@@ -61,3 +61,8 @@ export const ADD_COMPANY_DETAILS_VENDOR="/enquiry/addCompanyDetailVendor"
 
 //for filter
 export const FILTER="/enquiry/filter"
+// for blogs
+export const Add_Blog ="/enquiry/addBlog"
+export const Add_Application ="/enquiry/addApplication"
+export const Add_Slider ="/enquiry/add_slider"
+export const Edit_Blog= "/enquiry/updateBlog"

@@ -27,6 +27,15 @@ import CompanyDetail from "../components/company/CompanyDetail";
 import Editproduct from "../components/product/EditProduct";
 import ThankYou from "../pages/ThankYou";
 import Filter from "../utils/FilterForm";
+import AddBlog from "../components/blogs/AddBlog";
+import BlogList from "../pages/BlogList";
+import SliderList from "../pages/SliderList";
+import EditBlogs from "../components/blogs/EditBlogs";
+import AddSlider from "../components/slider/AddSlider";
+import EditSlider from "../components/slider/EditSlider";
+import AddApplications from "../components/applications/AddApplications";
+import ApplicationList from "../pages/ApplicationList";
+import EditApplications from "../components/applications/EditApplications";
 
 function AllRoutes() {
   return (
@@ -57,6 +66,17 @@ function AllRoutes() {
         <Route path="/ProductDetail" element={<ProductDetail />} />
         <Route path="/companyEditPage" element={<CompanyDetail />} />
         <Route path="/productFilter" element={<Filter />} />
+        <Route path="/add-blogs" element={<AddBlog />} />
+        <Route path="/add-slider" element={<AddSlider />} />
+        <Route path ="/blog-list" element={<BlogList />} />
+     
+        <Route path = "/editBlog/:name" element={<EditBlogs />} />
+        <Route path ="/slider-list" element={<SliderList />} />
+        <Route path ="/editSlider/:name" element={<EditSlider />} />
+        <Route path = "/add-application" element={<AddApplications />} />
+        <Route path ="/application-list" element={<ApplicationList /> } />
+        <Route path ="/editApplication/:name" element={<EditApplications />} />
+        {/* <Route path ="/application-list" */}
         {/* <Route path="/AddProduct" element={<Addproduct />} /> */}
         {/* <Route path="/ProductDetail" element={<ProductDetail />} /> */}
         <Route path="*" element={<NoMatch />} />

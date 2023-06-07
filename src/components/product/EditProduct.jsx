@@ -10,6 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import JoditEditor from 'jodit-react';
 
 import { useState, useEffect, useRef, useMemo } from "react";
+import Swal from "sweetalert2";
 // import FadeLoader from "react-spinners/FadeLoader";
 const override = {
   display: "block",
@@ -30,7 +31,7 @@ function Editproduct() {
   const [content, setContent] = useState('');
   const [image, setImage] = useState();
   const [preview, setPreview] = useState()
-  const [category, SetCategory] = useState([]);
+  const [category, SetCategory] = useState("");
   const [subcat, SetSubCat] = useState('');
   const [subcategory, SetSubCategory] = useState([]);
   const [imageUrl, setImageUrl] = useState(null);
@@ -39,8 +40,9 @@ function Editproduct() {
   
   const { state } = useLocation();
   // const params = useParams();
-  const { id } = state || {};
+  const { id , namee} = state || {};
   console.log("edit=>", id);
+  console.log("editname=>", namee);
   const [newformdata, setFormdata] = useState({});
   // const [discription, setDiscription] = useState();
   // const [product_name, setProduct_name] = useState();
@@ -49,7 +51,7 @@ function Editproduct() {
 
   useEffect(() => {
     axios.get(`/enquiry/editProduct/${id}`)
-      .then(response => setFormdata(response.data))
+      .then(response => setFormdata({ ...response.data, image: response.data.image || null }))
       .catch(error => console.log(error));
   }, []);
   console.log("foredit", newformdata);
@@ -82,20 +84,72 @@ function Editproduct() {
   // useEffect(()=>{
     
   // }, [])
-  const changeCategory = async(event) =>{    
-   await SetCategory(event.target.value);    
-   await setFormdata({...newformdata, category:category})
-    console.log("category", category);
-    
-    SetSubCategory(ProductCategory.find(cat => cat.Category === newformdata.category).subCategory);
-    // setFormdata(...newformdata)
-  }
-  const changeState = (event) => {
-    SetSubCat(event.target.value);
-    setFormdata({...newformdata, subCategory:subcat})
-    subcat === undefined ? setFormdata({...newformdata, subCategory:""}) :  setFormdata({...newformdata, subCategory:subcat});
 
-  }
+  // const changeCategory = (event) => {
+  //   const selectedCategory = event.target.value;
+  //   setCategory(selectedCategory);
+  //   setFormdata({ ...newformdata, category: selectedCategory });
+  //   const selectedSubcategory = ProductCategory.find(
+  //     (cat) => cat.Category === selectedCategory
+  //   )?.subCategory || [];
+  //   if (Array.isArray(selectedSubcategory)) {
+  //     setSubCategory(selectedSubcategory);
+  //   } else {
+  //     setSubCategory([]);
+  //   }
+   
+  // };
+
+//   useEffect(() =>{
+//   changeCategory();
+// },[]);
+const changeCategory = (event) => {
+  const selectedCategory = event.target.value;
+  SetCategory(selectedCategory);
+  setFormdata((prevData) => ({
+    ...prevData,
+    category: selectedCategory, subCategory: '',
+  }));
+
+  const selectedSubCategory = ProductCategory.find(
+    (cat) => cat.Category === selectedCategory
+  ).subCategory;
+  SetSubCategory(selectedSubCategory);
+  // SetSubCat(selectedSubCategory[0].sub);
+  setFormdata((prevData) => ({
+    ...prevData,
+    subCategory: selectedSubCategory[0]?.sub || "",
+  }));
+};
+
+const changeState = (event) => {
+  const selectedSubCat = event.target.value;
+  SetSubCat(selectedSubCat);
+  setFormdata((prevData) => ({
+    ...prevData,
+    subCategory: selectedSubCat || "",
+  }));
+};
+
+  // const changeState = (event) => {
+  //   const selectedSubcat = event.target.value;
+  //   setSubCategory(selectedSubcat);
+  //   setFormdata({ ...newformdata, subCategory: selectedSubcat });
+  // };
+  // const changeCategoryy = async(event) =>{    
+  //  await SetCategory(event.target.value);    
+  //  await setFormdata({...newformdata, category:category})
+  //   console.log("category", category);
+    
+  //   SetSubCategory(ProductCategory.find(cat => cat.Category === newformdata.category).subCategory);
+  
+  // }
+  // const changeStatey = (event) => {
+  //   SetSubCat(event.target.value);
+  //   setFormdata({...newformdata, subCategory:subcat})
+  //   subcat === undefined ? setFormdata({...newformdata, subCategory:""}) :  setFormdata({...newformdata, subCategory:subcat});
+
+  // }
 
   // convert object url to images
 //   useEffect(() => {
@@ -117,7 +171,7 @@ function Editproduct() {
     formState: { errors },
   } = useForm();
   const formData = new FormData();
-  const imageHandler = (event) => {
+  const imageHandlerr = (event) => {
 
    
     if (event.target && event.target.files[0]) {
@@ -138,6 +192,19 @@ function Editproduct() {
     }
 
     // setImage(event.target.files[0]); comment
+  };
+
+  const imageHandler = (event) => {
+    if (event.target && event.target.files[0]) {
+      setImage(event.target.files[0]);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setFormdata({ ...newformdata, image: reader.result }); // Convert image to string
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    } else {
+      console.log("Something went wrong");
+    }
   };
   console.log("img===>", image);
  
@@ -192,9 +259,20 @@ function Editproduct() {
       console.log("successful");     
       if (update.status === 200) {
         setLoading(false);
-        toast.success("Product Updated Successfully !", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
+        // toast.success(<strong>{namee}</strong> + ' Updated Successfully!', {
+        //   position: toast.POSITION.TOP_RIGHT,
+        // });
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: `<strong>${namee}</strong> <br/> Updated Successfully!`,
+          showConfirmButton: false,
+          timer: 4500,
+          customClass: {
+            title: 'swal2-title-custom' // Custom CSS class for the title
+          },
+         
+        })
        
         // navigate("/vendorAdminPanel");
         
@@ -377,7 +455,7 @@ function Editproduct() {
                           <div className="avatar-lg avtlg">
                             <div className="avatar-title bg-light bgavt rounded">
                               <img
-                                src={newformdata.image|| preview}
+                                 src={newformdata.image}
                                 // onChange={imageHandler}                    
                                 id="product-img"
                                 className="avatar-md avtwid h-auto"

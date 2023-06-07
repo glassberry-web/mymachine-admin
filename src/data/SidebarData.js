@@ -1,5 +1,10 @@
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import CategoryRoundedIcon from '@mui/icons-material/CategoryRounded';
+import {MdOutlineArticle, MdProductionQuantityLimits, MdDashboard, MdOutlineSpaceDashboard} from "react-icons/md"
+import  {TfiLayoutSlider, TfiLayoutSliderAlt} from "react-icons/tfi"
+import {GiTrade, GiVendingMachine} from "react-icons/gi"
+import {ImOffice} from "react-icons/im"
+
 
 const SidebarData = [
   {
@@ -7,14 +12,14 @@ const SidebarData = [
     title: "Dashboard",
     datakey: "t-dashboards",
     href: "sidebarDashboards",
-    icon: <DashboardOutlinedIcon />,
+    icon: <MdDashboard  fontSize='2rem'/>,
   },
   {
     idx: 2,
     title: "Companies",
     href: "sidebarApps",
     datakey: "t-apps",
-    icon: <CategoryRoundedIcon />,
+    icon: <ImOffice fontSize='2rem' />,
     submenu: [
       {
         idx: 1,
@@ -34,10 +39,10 @@ const SidebarData = [
   },
   {
     idx: 3,
-    title: "TradeAccountEnquiry",
+    title: "Trade Account Enquiry",
     href: "sidebarLayouts",
     datakey: "t-layouts",
-    icon: <CategoryRoundedIcon />,
+    icon: <GiTrade fontSize='2rem' />,
     submenu: [
       {
         idx: 1,
@@ -46,13 +51,13 @@ const SidebarData = [
         href: "Enquirylist",
         datakey: "t-datatables",
       },
-      {
-        idx: 2,
-        id: "sidebarLayouts",
-        title: "Approved List",
-        href: "Approvedlist",
-        datakey: "t-datatables",
-      },
+      // {
+      //   idx: 2,
+      //   id: "sidebarLayouts",
+      //   title: "Approved List",
+      //   href: "Approvedlist",
+      //   datakey: "t-datatables",
+      // },
     ],
   },
   {
@@ -60,7 +65,7 @@ const SidebarData = [
     title: "Products",
     href: "sidebarLockScreen",
     datakey: "t-layouts",
-    icon: <CategoryRoundedIcon />,
+    icon: <GiVendingMachine fontSize='2rem'/>,
     submenu: [
       {
         idx: 1,
@@ -73,10 +78,10 @@ const SidebarData = [
   },
   {
     idx: 5,
-    title: "ProductsEnquiry",
+    title: "Products Enquiry",
     href: "sidebarAuth",
     datakey: "t-layouts",
-    icon: <CategoryRoundedIcon />,
+    icon: <MdProductionQuantityLimits fontSize='2rem' />,
     submenu: [
       {
         idx: 1,
@@ -86,6 +91,62 @@ const SidebarData = [
         datakey: "t-datatables",
       },
     ],
+  },
+  {
+    idx: 6,
+    title: "Blogs",
+    href: "sidebarui",
+    datakey: "t-app",
+    icon: <MdOutlineArticle fontSize='2rem' />,
+    submenu: [     
+      {
+        idx: 1,
+        id: "sidebarui",
+        title: "Blog List",
+        href: "blog-list",
+        datakey: "t-seller",
+      },    
+      
+    ],
+  },
+  {
+    idx: 7,    
+    title: "Applications",
+    href: "add-application",
+    datakey: "t-appli",
+    icon: <MdOutlineSpaceDashboard fontSize='2rem' />,
+    submenu: [
+      {
+        idx: 1,
+        id: "sidebarappli",
+        title: "Application List",
+        href: "application-list",
+        datakey: "t-slider",
+      },
+      {
+        idx: 2,
+        id: "sidebarappli",
+        title: " Add Application",
+        href: "add-application",
+        datakey: "t-slider",
+      },
+    ]
+  },
+  {
+    idx: 8,    
+    title: "Slider",
+    href: "sidebarslider",
+    datakey: "t-sliderr",
+    icon: <TfiLayoutSliderAlt fontSize='2rem' />,
+    submenu: [
+      {
+        idx: 1,
+        id: "sidebarslider",
+        title: "Slider List",
+        href: "slider-list",
+        datakey: "t-slider",
+      },
+    ]
   },
 ];
 

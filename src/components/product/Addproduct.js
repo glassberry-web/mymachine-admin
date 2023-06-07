@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { ToastContainer, toast } from "react-toastify";
 import JoditEditor from 'jodit-react';
+import 'jodit/build/jodit.min.css';
 
 import { useState, useEffect, useRef, useMemo } from "react";
 
@@ -152,6 +153,7 @@ function Addproduct() {
 
   const buttons = ["image"]
   const editorConfig = {
+    responsive: true,
     buttons: buttons,
     uploader: {
       insertImageAsBase64URI: true
