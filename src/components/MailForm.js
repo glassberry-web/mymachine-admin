@@ -1,12 +1,36 @@
-import { useState } from "react";
+import { useState,  useRef, useMemo  } from "react";
 import { useForm } from "react-hook-form";
 
 import { useNavigate } from "react-router-dom";
 import { Mail } from "../api/apiEndpoints";
 import axios from "../api/axios";
 import MailData from "../data/MailData";
+import JoditEditor from 'jodit-react';
+import 'jodit/build/jodit.min.css';
+const buttons = ["image"]
+const editorConfig = {
+  responsive: true,
+  buttons: buttons,
+  uploader: {
+    insertImageAsBase64URI: true
+  },
+ 
+}
+function JoditEditorWrapper({ content, setContent, editorConfig }) {
+  const editor = useRef(null);
+
+  return useMemo(() => (
+    <JoditEditor
+      ref={editor}
+      value={content}
+      config={editorConfig}
+      onChange={(newContent) => setContent(newContent)}
+    />
+  ), [content, setContent, editorConfig]);
+}
 function EnquiryMail() {
-  const[image,setImage]=useState("")
+  const[image,setImage]=useState("");
+  const [content, setContent] = useState('');
   const {
     register,
     handleSubmit,
@@ -25,6 +49,8 @@ console.log("img",image)
     console.log("data===>", data);
     const formData = new FormData();
 
+   
+
 
     // formData.append('file', data.file[0]);
     try {
@@ -37,7 +63,8 @@ console.log("img",image)
       formData.append("mobileNo", data.mobileNo);
       formData.append("emailId", data.emailId);
       formData.append("ownerName", data.ownerName);
-      formData.append('logo', data.logo[0]);
+      formData.append("company_description", content);
+      formData.append('logo', image);
       formData.append("regNo", data.regNo);
       formData.append("panNo", data.panNo);
       formData.append("discription", data.discription);
@@ -94,8 +121,16 @@ console.log("img",image)
                 {...register(`${data.name}`, {
                   required: true,
                 })}
-                />):(
-
+                />):
+               (  data.title === "company_description" ? (
+                <JoditEditorWrapper
+                  content={content}
+                  setContent={setContent}
+                  editorConfig={editorConfig}
+                />
+              ) : 
+              (data.title === "Company logo") ?
+              (
                 <input
                 type={data.type}
                 className="form-control"
@@ -103,11 +138,21 @@ console.log("img",image)
                 onChange={imgHandler}
                 accept={data.accept}
                 placeholder={data.placeholder}
-                {...register(`${data.name}`, {
-                  required: true,
-                })}
-              />
-                )
+               
+              />):
+                (
+                  <input
+                  type={data.type === "file" ? "text" : data.type}
+                  className="form-control"
+                  id={data.id}
+                  onChange={imgHandler}
+                  accept={data.accept}
+                  placeholder={data.placeholder}
+                  {...register(`${data.name}`, {
+                    required: true,
+                  })}
+                />
+                ))
               }
               
             </div>

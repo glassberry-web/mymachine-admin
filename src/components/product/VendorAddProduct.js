@@ -1,6 +1,6 @@
 import { ProductCategory, featured } from "./ProductCategory";
 import { useForm } from "react-hook-form";
-import { ADD_PRODUCT, DELETE_PRODUCT } from "../../api/apiEndpoints";
+import { ADD_PRODUCT, DELETE_PRODUCT, VENDOR_ADD_PRODUCT } from "../../api/apiEndpoints";
 import parse from 'html-react-parser';
 import FullPageLoader from "../FullPageLoader";
 import axios from "../../api/axios";
@@ -12,7 +12,7 @@ import 'jodit/build/jodit.min.css';
 
 import { useState, useEffect, useRef, useMemo } from "react";
 
-function Addproduct() {
+function VendorAddproduct() {
   const [loading, setLoading] = useState(false)
   const editor = useRef(null);
   const [content, setContent] = useState('');
@@ -23,7 +23,8 @@ function Addproduct() {
   const [subcategory, SetSubCategory] = useState([]);
   const [imageUrl, setImageUrl] = useState(null);
   const navigate = useNavigate();
-  // const { _id} = JSON.parse(localStorage.getItem("vendor" || ""));
+  const { _id} = JSON.parse(localStorage.getItem("vendor" || ""));
+  console.log("vendorrriddd", _id);
 
   const changeCategory = (event) =>{
     SetCategory(event.target.value);
@@ -128,9 +129,9 @@ function Addproduct() {
       formData.append("power", data.power);
       formData.append("weight", data.weight);
       formData.append("shortDiscription", data.shortDiscription);
-      // formData.append("_id", _id);
+      formData.append("_id", _id);
 
-      const detail = await axios.post(ADD_PRODUCT, formData, {
+      const detail = await axios.post(VENDOR_ADD_PRODUCT, formData, {
         headers: {"Content-Type": "multipart/form-data"},
       });  
       setLoading(false);      
@@ -141,8 +142,8 @@ function Addproduct() {
         toast.success("Product Added Successfuly !", {
           position: toast.POSITION.TOP_RIGHT,
         });
-        // navigate("/vendorAdminPanel");
-        navigate("/ProductList")
+        navigate("/vendorAdminPanel");
+        // navigate("/ProductList")
       }
     } catch (error) {
       setLoading(false);  
@@ -172,7 +173,7 @@ function Addproduct() {
                 <div className="page-title-right">
                   <ol className="breadcrumb m-0">
                     <li className="breadcrumb-item">
-                      <Link to={"/sidebarDashboards"}>Dashboard</Link>
+                      <Link to={"/vendorAdminPanel"}>Dashboard</Link>
                     </li>
                     <li className="breadcrumb-item active">Add Product</li>
                   </ol>
@@ -895,7 +896,7 @@ function Addproduct() {
   );
 }
 
-export default Addproduct;
+export default VendorAddproduct;
 
 function convertToBase64(file){
   return new Promise((resolve, reject) => {

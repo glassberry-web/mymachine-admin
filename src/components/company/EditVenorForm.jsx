@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { ADD_COMPANY_DETAILS } from "../../api/apiEndpoints";
+import { ADD_COMPANY_DETAILS, ADD_COMPANY_Vendor_DETAILS } from "../../api/apiEndpoints";
 import axios from "../../api/axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -8,8 +8,9 @@ import { ToastContainer, toast } from "react-toastify";
 
 import { useEffect, useState } from "react";
 import AddCompanyForm from "./AddCompanyForm";
+import AddVendorForm from "./AddVendorForm";
 
-function Addproduct_SuperAdmin({ companyDetails }) {
+function Addproduct_Vendor({ companyDetails }) {
   console.log("companyDetails===>", companyDetails);
   const [image, setImage] = useState();
   // const [companyDetails, setResponse] = useState();
@@ -99,7 +100,7 @@ function Addproduct_SuperAdmin({ companyDetails }) {
             </div>
           </div>
          
-          <AddCompanyForm companyDetails={companyDetails} ADD_COMPANY_DETAILS={ADD_COMPANY_DETAILS} navigateTo='/Companylist'/>
+          <AddVendorForm companyDetails={companyDetails} ADD_COMPANY_DETAILS={ADD_COMPANY_Vendor_DETAILS} navigateTo='/vendorAdminPanel'/>
         </div>
       </div>
       {/* ); */}
@@ -109,4 +110,4 @@ function Addproduct_SuperAdmin({ companyDetails }) {
   );
 }
 
-export default Addproduct_SuperAdmin;
+export default Addproduct_Vendor;

@@ -36,6 +36,12 @@ import EditSlider from "../components/slider/EditSlider";
 import AddApplications from "../components/applications/AddApplications";
 import ApplicationList from "../pages/ApplicationList";
 import EditApplications from "../components/applications/EditApplications";
+import VendorAddproduct from "../components/product/VendorAddProduct";
+import VendorProductList from "../pages/vendor/VendorProductList";
+import EditVendorProduct from "../components/product/EditVendorProduct";
+import VendorProductDetail from "../components/product/VendorProductDetail";
+import Vendor_Product_Detail from "../pages/vendor/Vendor_Product_Detail";
+import Edit_Vendor_Company from "../components/company/vendor/Edit_Vendor_Company";
 
 function AllRoutes() {
   return (
@@ -83,11 +89,12 @@ function AllRoutes() {
       </Route>
       <Route element={<VendorProtectedRoute />}>
         <Route path="/profile" element={<Profile />} />
-        <Route path="/vendorAdminPanel" element={<AddProduct />} />
+        <Route path="/vendorAdminPanel" element={<VendorProductList />} />
+        <Route path="/edit-vendor-product/:name" element={<EditVendorProduct />} />
         <Route path="/editProfile" element={<EditProfile />} />
-        <Route path="/AddProduct" element={<Addproduct />} />
-
-        <Route path="/ProductDetail" element={<ProductDetail />} />
+        <Route path="/VendorAddProduct" element={<VendorAddproduct />} />
+         <Route path="/edit-vendor-form" element ={<Edit_Vendor_Company/>} />
+        <Route path="/vendor-product-detail" element={<Vendor_Product_Detail />} />
       </Route>
       {/* <Route path="*" element={<NoMatch />} /> */}
     </Routes>

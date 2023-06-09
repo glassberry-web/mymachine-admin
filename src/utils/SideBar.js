@@ -13,6 +13,7 @@ import UserEnquiryList from "../components/enquiry/UserEnquiryList";
 import BlogList from "../components/blogs/BlogList";
 import SliderList from "../components/slider/SlderList";
 import ApplicationList from "../components/applications/ApplicationList";
+import VendorProductList from "../components/product/VendorProductList";
 const SideBar = ({
   title,
   onClick,
@@ -199,6 +200,8 @@ const SideBar = ({
                      (<SliderList productListResponse={response} />):
                      (URL === "/enquiry/superAdminApplicationList" ? 
                      (<ApplicationList productListResponse={response} />):
+                     (URL === "/enquiry/vendorProductList" ? 
+                     (<VendorProductList productListResponse={response}  ProductDetailLink = {ProductDetailLink}/>):
                       (
                       <table
                         role="grid"
@@ -443,7 +446,7 @@ const SideBar = ({
                           ))}
                         </tbody>
                       </table>
-                    )))))))}
+                    ))))))))}
                   </div>
                 </div>
               </div>

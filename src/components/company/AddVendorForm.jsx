@@ -8,7 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useEffect, useState, useMemo, useRef } from "react";
 import JoditEditor from 'jodit-react';
 
-function AddCompanyForm({ companyDetails, ADD_COMPANY_DETAILS, navigateTo }) {
+function AddVendorForm({ companyDetails, ADD_COMPANY_DETAILS, navigateTo }) {
   const [image, setImage] = useState();
    const [formdata, setFormData] = useState(
     companyDetails?.company_description || "",);
@@ -711,4 +711,4 @@ function AddCompanyForm({ companyDetails, ADD_COMPANY_DETAILS, navigateTo }) {
   );
 }
 
-export default AddCompanyForm;
+export default AddVendorForm;

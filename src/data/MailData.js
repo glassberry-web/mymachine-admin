@@ -200,6 +200,16 @@ const MailData = [
     required: "required",
     type: "text",
   },
+  {
+    idx: 21,
+    htmlFor: "company_company_description",
+    id: "company_description",
+    placeholder: "Enter total customer",
+    name: "company_description",
+    title: "company_description",
+    required: "required",
+    type: "text",
+  }
 ];
 
 export default MailData;

@@ -56,8 +56,8 @@ function VendorPage() {
               </li> */}
             </ul>
             <div className="gap-2">
-              <Link to="/enquiryForm" className="btn btn-success">
-                Start Selling
+              <Link to="/enquiryForm" className="btn btn-success mr-15" style={{marginRight:"1rem"}}>
+                Register
               </Link>
               <Link to="/vendorAuth" className="btn btn-success">
                 Login
@@ -73,7 +73,7 @@ function VendorPage() {
             <div className="col-lg-8 col-sm-10">
               <div className="text-center">
                 <h1 className="display-4 fw-medium mb-4 lh-base text-white">
-                  Let's grow TOGETHER & make your Brand Popular
+                  Let's grow together & make your Brand Popular
                   {/* <span className="text-success">NFT Marketplace</span> */}
                 </h1>
                 {/* <p className="lead text-white-50 lh-base mb-4 pb-2">
@@ -81,9 +81,9 @@ function VendorPage() {
                   one-of-a-kind digital assets. Given they're digital in nature,
                   can physical works of art be turned into NFTs?.
                 </p> */}
-                <div className=" gap-2 justify-content-center">
-                  <Link to="/enquiryForm" className="btn btn-primary">
-                    Start Selling
+                <div className="gap-2 mr-15 justify-content-center">
+                  <Link to="/enquiryForm" className="btn btn-primary" style={{marginRight:"1rem"}}>
+                  Register
                     <i className="ri-arrow-right-line align-middle ms-1" />
                   </Link>
                   <Link to="/vendorAuth" className="btn btn-danger">

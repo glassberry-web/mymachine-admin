@@ -321,7 +321,7 @@ function EditProfile(props) {
                                 >
                                   Skills
                                 </label>
-                                <select
+                                {/* <select
                                   className="form-control"
                                   name="skillsInput"
                                   data-choices
@@ -340,7 +340,7 @@ function EditProfile(props) {
                                   </option>
                                   <option value="python">Python</option>
                                   <option value="php">PHP</option>
-                                </select>
+                                </select> */}
                               </div>
                             </div>
                             <div className="col-lg-4">

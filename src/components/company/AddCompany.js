@@ -1,6 +1,6 @@
 import { ProductCategory } from "../../components/product/ProductCategory";
 import { useForm } from "react-hook-form";
-import { AdminSignUp, COMPANY_SIGNIN_MAIL } from "../../api/apiEndpoints";
+import { AdminSignUp, COMPANY_SIGNIN_MAIL, COMPANY_SIGNUP_MAIL } from "../../api/apiEndpoints";
 import axios from "../../api/axios";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
@@ -46,9 +46,15 @@ function AddCompany() {
           "superAdminvendorid",
           JSON.stringify(detail.data.result)
         );
+        toast.success("Registered Successfully !", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
         try {
-          const mail = await axios.post(COMPANY_SIGNIN_MAIL, {
+          const mail = await axios.post( COMPANY_SIGNIN_MAIL, {
             emailId: detail.data.emailId,
+            password: detail.data.password
+           
+            
           });
           console.log("mail===>", mail);
           if (mail.status === 200) {
@@ -223,26 +229,7 @@ function AddCompany() {
                             {errors.ConPass?.message}
                           </div>
                         </div>
-                      </div>
-
-                      {/* <div
-                    id="password-contain"
-                    className="p-3 bg-light mb-2 rounded"
-                  >
-                    <h5 className="fs-14">Password must contain:</h5>
-                    <p id="pass-length" className="invalid fs-13 mb-2">
-                      Minimum <b>8 characters</b>
-                    </p>
-                    <p id="pass-lower" className="invalid fs-13 mb-2">
-                      At <b>lowercase</b> letter (a-z)
-                    </p>
-                    <p id="pass-upper" className="invalid fs-13 mb-2">
-                      At least <b>uppercase</b> letter (A-Z)
-                    </p>
-                    <p id="pass-number" className="invalid fs-13 mb-0">
-                      A least <b>number</b> (0-9)
-                    </p>
-                  </div> */}
+                      </div>                
                       <div className="mt-4">
                         <button className="btn btn-info w-100" type="submit">
                           Sign Up

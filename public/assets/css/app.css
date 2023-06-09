@@ -13823,7 +13823,11 @@ to {
     background-image: url(../images/nft/bg-home.jpg);
     background-size: cover;
     background-position: bottom;
-    padding: 222px 0 150px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* padding: 222px 0 150px 0; */
 }
 .nft-hero .bg-overlay {
     background-color: #05175f;

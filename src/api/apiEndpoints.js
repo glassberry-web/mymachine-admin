@@ -9,6 +9,7 @@ export const User_ENQUIRY = "/enquiry/getUserEnquiry";
 
 //for product List
 export const superAdminProductList = "/enquiry/superAdminProductList";
+export const vendorProductList = "/enquiry/vendorProductList";
 
 //mail
 export const Mail = "/enquiry/approvedMail";
@@ -22,6 +23,7 @@ export const VENDOR_LIST = "/enquiry/vendorList";
 
 //vendor add product
 export const ADD_PRODUCT = "/enquiry/addProduct";
+export const VENDOR_ADD_PRODUCT = "/enquiry/vendoraddProduct";
 export const GET_PRODUCT = "/enquiry/getProduct";
 export const EdIT_PRODUCT = "/enquiry/editProduct";
 export const UPDATE_PRODUCT = "/enquiry/updateProduct";
@@ -45,14 +47,15 @@ export const latestUserEnquiry = "/enquiry/latestUserEnquiry";
 //latestproduct
 export const latestProduct = "/enquiry/latestProduct";
 //for superAdmin_addCompany
-export const AdminSignUp = "/enquiry/addVendor";
-export const AdminLogIn = "/enquiry/addCompany_Sign_up";
+export const AdminSignUp = "/enquiry/signUpVendor";
+export const AdminLogIn = "/enquiry/addVendor";
 
 // for Add Company details
 
 export const ADD_COMPANY_DETAILS="/enquiry/addCompanyDetail"
+export const ADD_COMPANY_Vendor_DETAILS="/enquiry/addCompanyVendorDetail/:id"
 export const COMPANY_SIGNIN_MAIL="/enquiry/signInMail"
-
+export const COMPANY_SIGNUP_MAIL="/enquiry/signUpVendor"
 //for success status
 export const SUCCESS_STATUS="/enquiry/successfulStatus"
 
