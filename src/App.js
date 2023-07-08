@@ -3,6 +3,7 @@ import AllRoutes from "./AllRoutes/AllRoutes";
 
 
 function App() {
+  console.log("here.................")
   return (
     <Router>
       <AllRoutes />
