@@ -4,7 +4,7 @@ import axios from "axios";
 // const baseURL = "http://15.207.31.23:5001";
 // const baseURL = "https://194.31.53.145:5000",
 // const baseURL = "http://localhost:5000";
-const baseURL = "http://mymachinestore.com/enquiry";
+const baseURL = "http://mymachinestore.com:5000";
 export default axios.create({
   baseURL: baseURL,
   // withCredentials: true
