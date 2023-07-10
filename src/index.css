@@ -10,3 +10,12 @@
   outline: none;
    padding: 5px 5px!important;
 }
+
+.gridjs-td span a{
+  color: #000 !important;
+  text-decoration: none;
+} 
+.gridjs-td span a:hover{
+  color: blue !important;
+  text-decoration: none;
+}

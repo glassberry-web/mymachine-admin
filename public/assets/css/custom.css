@@ -23,7 +23,7 @@ td.gridjs-td {
   border: 1px solid #e5e7eb;
   box-sizing: content-box;
   padding: 13px 15px !important;
-
+  text-align: center;
 }
 .topbar-user {
   background-color: #fff !important;

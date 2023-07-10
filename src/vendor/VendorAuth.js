@@ -46,8 +46,8 @@ function VendorAuth(props) {
         });
       }
     } catch (err) {
-      console.log("message====>", err.message);
-      toast.error(`${err.message}`, {
+      console.log("message====>",err);
+      toast.error(`${err?.response?.data?.message}`, {
         position: toast.POSITION.TOP_RIGHT,
       });
     }

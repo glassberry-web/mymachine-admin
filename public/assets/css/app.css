@@ -14461,7 +14461,7 @@ padding-bottom: 50px;
     color: #656464 !important;
   }
   table>tbody>tr:nth-of-type(odd)>*{
-    background-color: #dcdcdc;
+    /* background-color: #dcdcdc; */
 }
 /* table>tbody>tr:nth-of-type(odd)>*:hover{
     background-color: #fcbe00;
