@@ -42,6 +42,7 @@ import EditVendorProduct from "../components/product/EditVendorProduct";
 import VendorProductDetail from "../components/product/VendorProductDetail";
 import Vendor_Product_Detail from "../pages/vendor/Vendor_Product_Detail";
 import Edit_Vendor_Company from "../components/company/vendor/Edit_Vendor_Company";
+import ForgetPassword from "../pages/ForgetPassword";
 
 function AllRoutes() {
   return (
@@ -52,6 +53,7 @@ function AllRoutes() {
       <Route path="/mail" element={<VendorPage />} />
 
       <Route path="/vendorAuth" element={<VendorAuth />} />
+      <Route path="/vendor/reset-password/:userId/:resetToken" element={<ForgetPassword />}/>
       {/* <Route path="/AddProduct" element={<Addproduct />} /> */}
 
       <Route element={<ProtectedRoute />}>
