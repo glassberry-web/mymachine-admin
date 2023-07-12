@@ -1,12 +1,12 @@
 import axios from "../api/axios";
 import { useForm } from "react-hook-form";
-import { useNavigate, createSearchParams } from "react-router-dom";
+import { useNavigate, createSearchParams, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 // import { vendorAction } from "../reducers/vendor/VendorAuthAction";
 // import { useEffect } from "react";
 // import { useState } from "react";
-import { VENDOR_AUTH } from "../api/apiEndpoints";
+import { VENDER_RESET_PASSWORD, VENDOR_AUTH } from "../api/apiEndpoints";
 import { useState } from "react";
 
 function ForgetPassword(props) {
@@ -18,32 +18,23 @@ function ForgetPassword(props) {
     formState: { errors },
   } = useForm();
 
+  let { userId,resetToken} = useParams();
+
   const navigate = useNavigate();
   const logInHandler = async (data, e) => {
     try {
       e.stopPropagation();
-      const detail = await axios.post(VENDOR_AUTH, {
+      console.log("data===>",userId,resetToken);
+      const detail = await axios.post(VENDER_RESET_PASSWORD, {
         email: data.email,
-        password: data.password,
+        userId,
+        token:resetToken
       });
-      console.log("detail===>", detail);
       if (detail.status === 200) {
-        const vendorid = localStorage.setItem(
-          "vendor",
-          JSON.stringify(detail.data.result.vendorDetails)
-        );
-        console.log("vendorid===>",vendorid);
-        navigate({
-          pathname: "/vendorAdminPanel",
-          search: createSearchParams({
-            vendorId: detail.data.result.vendorDetails._id,
-          }).toString(),
-        });
-        // navigate("/vendorAdminPanel")
-
-        toast.success("Success Notification !", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
+          toast.success("Mail sent successfully !", {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        navigate("/vendorAuth")
       }
     } catch (err) {
       console.log("message====>",err);
@@ -52,20 +43,8 @@ function ForgetPassword(props) {
       });
     }
 
-    // setRes({email:data.email,password:data.password})
-
-    // dispatch(vendorAction({email:data.email,password:data.password}));
-
   };
 
-  // console.log("res2===>",res)
-
-  // useEffect(()=>{
-  //   if(res){
-  //     dispatch(vendorAction(res))
-  //     navigate("/vendorAdminPanel");
-  //   }
-  //  },[dispatch,res])
   return (
     <>
       <div className="auth-page-wrapper pt-5">
@@ -93,7 +72,7 @@ function ForgetPassword(props) {
                     <a href="index.html" className="d-inline-block auth-logo">
                       <img
                         className="logoo"
-                        src="assets/images/logowhite.png"
+                        src="/assets/images/logowhite.png"
                         alt="MyMachineStore"
                       />
                     </a>
@@ -107,9 +86,9 @@ function ForgetPassword(props) {
                 <div className="card mt-4">
                   <div className="card-body p-4">
                     <div className="text-center mt-2">
-                      <h5 className="text-primary">Welcome Back !</h5>
+                      <h5 className="text-primary">Forgot Password</h5>
                       <p className="text-muted">
-                        Sign in to continue to My Machine store.
+                        Enter your email address and we'll send you an email.
                       </p>
                     </div>
                     <div className="p-2 mt-4">
@@ -140,69 +119,13 @@ function ForgetPassword(props) {
                           )}
                         </div>
 
-                        <div className="mb-3">
-                          <div className="float-end">
-                            <a
-                              href="auth-pass-reset-basic.html"
-                              className="text-muted"
-                            >
-                              Forgot password?
-                            </a>
-                          </div>
-                          <label
-                            className="form-label"
-                            htmlFor="password-input"
-                          >
-                            Password
-                          </label>
-                          <div className="position-relative auth-pass-inputgroup mb-3">
-                            <input
-                              name="password"
-                              type="password"
-                              className="form-control pe-5 password-input"
-                              placeholder="Enter password"
-                              id="password"
-                              {...register("password", { required: true })}
-                              aria-invalid={errors.password ? "true" : "false"}
-                            />
-                            {errors.password?.type === "required" && (
-                              <p role="alert" id="error">
-                                Enter valid password
-                              </p>
-                            )}
-
-                            <button
-                              className="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted "
-                              type="button"
-                              id="password-addon"
-                            >
-                              <i className="ri-eye-fill align-middle"></i>
-                            </button>
-                          </div>
-                        </div>
-
-                        <div className="form-check">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="auth-remember-check"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="auth-remember-check"
-                          >
-                            Remember me
-                          </label>
-                        </div>
-
                         <div className="mt-4">
                           <button
                             className="btn btn-info w-100"
                             // onClick={formSubmitHandler}
                             type="submit"
                           >
-                            Sign In
+                            Submit
                           </button>
                         </div>
                       </form>

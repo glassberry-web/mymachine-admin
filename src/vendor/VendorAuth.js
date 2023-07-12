@@ -1,6 +1,6 @@
 import axios from "../api/axios";
 import { useForm } from "react-hook-form";
-import { useNavigate, createSearchParams } from "react-router-dom";
+import { useNavigate, createSearchParams, NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 // import { vendorAction } from "../reducers/vendor/VendorAuthAction";
@@ -26,7 +26,6 @@ function VendorAuth(props) {
         email: data.email,
         password: data.password,
       });
-      console.log("detail===>", detail);
       if (detail.status === 200) {
         const vendorid = localStorage.setItem(
           "vendor",
@@ -142,12 +141,9 @@ function VendorAuth(props) {
 
                         <div className="mb-3">
                           <div className="float-end">
-                            <a
-                              href="auth-pass-reset-basic.html"
-                              className="text-muted"
-                            >
+                              <NavLink className="text-muted" to="/vendor/reset-password">
                               Forgot password?
-                            </a>
+                              </NavLink>
                           </div>
                           <label
                             className="form-label"

@@ -16,6 +16,8 @@ export const Mail = "/enquiry/approvedMail";
 
 //vendor auth
 export const VENDOR_AUTH = "/enquiry/vendorAdminLogIN";
+export const VENDER_RESET_PASSWORD = "/enquiry/generateResetPasswordLink";
+export const VENDER_CHANGE__PASSWORD = '/enquiry/resetPassword'
 
 //vendor list
 export const VENDOR_LIST = "/enquiry/vendorList";
