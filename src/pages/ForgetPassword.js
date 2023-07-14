@@ -34,11 +34,13 @@ function ForgetPassword(props) {
           toast.success("Mail sent successfully !", {
             position: toast.POSITION.TOP_RIGHT,
           });
-        navigate("/vendorAuth")
+          setTimeout(() => {
+            navigate("/vendorAuth");
+         }, 1000);
       }
     } catch (err) {
       console.log("message====>",err);
-      toast.error(`${err?.response?.data?.message}`, {
+      toast.error(`${err?.response?.data?.message ?err?.response?.data?.message:err?.response?.data}`, {
         position: toast.POSITION.TOP_RIGHT,
       });
     }

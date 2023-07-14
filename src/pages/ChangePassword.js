@@ -37,10 +37,14 @@ function ChnagePassword(props) {
         token: resetToken,
       });
       if (detail.status === 200) {
-        navigate("/vendorAuth");
-        toast.success("Password Chnaged Successfully !", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
+          toast.success("Password Chnaged Successfully !", {
+              position: toast.POSITION.TOP_RIGHT,
+              onClose: () => window.alert('Called when I close')
+            });
+        setTimeout(() => {
+            navigate("/vendorAuth");
+       }, 1000);
+       
       }
     } catch (err) {
       console.log("message====>", err);
